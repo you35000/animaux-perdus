@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <div class="col-4 offset-4 border py-3 px-5">
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="alert alert-success mb-3 text-center">
+                    Vous êtes déjà connecté en tant que {{ app.user.pseudo }} <a href="{{ path('app_logout') }}"
+                                                                                 class="badge bg-light ms-4 text-secondary">Se
+                        déconnecter</a>
+                </div>
+            {% endif %}
+
+            <h1 class="h3 mb-5 font-weight-normal text-center">Veuillez vous connecter</h1>
+            <div class="form-floating mb-3">
+                <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control mb-3"
+                       autocomplete="email" required autofocus placeholder="Email ou Pseudo">
+                <label for="inputEmail">Email ou Pseudo</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" name="password" id="inputPassword" class="form-control mb-3"
+                       autocomplete="current-password" required placeholder="Password">
+                <label for="inputPassword">Password</label>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="row">
+                <div class="col-6 checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                    </label>
+                </div>
+                <div class="col-6 checkbox mb-3">
+                    <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié</a>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-lg btn-primary" type="submit">
+                    Se connecter
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

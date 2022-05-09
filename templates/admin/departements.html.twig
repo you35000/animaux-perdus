@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin : Departements{% endblock %}
+
+{% block body %}
+
+<div id="app">
+    {% verbatim %}
+    <div class="modal fade" id="newDepartement" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ajouter un département</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input v-model="newDepartement.nom" type="text" class="form-control" id="name" placeholder="Nom de département" required>
+                        <label for="name">Nom de département</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input v-model="newDepartement.Code" type="text" class="form-control" id="name" placeholder="Code de département" required>
+                        <label for="city">Code Département</label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" @click="postPlace()" data-bs-dismiss="modal">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+     {% endverbatim %}
+
+
+    {% verbatim %}
+
+
+                <div class="col-2 pt-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newPlace"><i class="fa fa-plus"></i></button>
+                </div>
+               <div v-if="placeId">
+    {% endverbatim %}
+
+    <div class="col-6 offset-3">
+        <h2>Gestion de Départements</h2>
+        <form action="{{path('departements')}}" method="post">
+
+            <div class="row">
+                <div class="col-6 offset-0 ">
+                    <div class="form-floating">
+                        <input type="text" name="search" id="search" placeholder="Recherche un departement"
+                               class="form-control">
+                        <label for="search">Rechercher un departement</label>
+                    </div>
+                </div>
+
+                <div class="col-2 offset-1">
+                    <button type="submit" class="btn btn-primary my-auto">Rechercher</button>
+                </div>
+                <div class="col-2 offset-1">
+                <a href="" class="btn btn-success">
+                    <i class="fa fa-plus"></i>
+                </a>
+                </div>
+            </div>
+        </form>
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>département</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for d in departements %}
+                <tr>
+                    <th><input type="text" id="departementNom{{ d.id }}" readonly class="form-control-plaintext"
+                               value="{{ d.nom }}">
+                    </th>
+                    <th>
+                        <button id="update{{ d.id }}" class="btn btn-secondary update"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
+                            <i class="fa fa-trash-can"></i>
+                        </button>
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascript%}
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x"></script>
+<script src="{{ asset('js/departement.js') }}" type="text/javascript"></script>
+{% endblock %}
