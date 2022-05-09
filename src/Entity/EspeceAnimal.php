@@ -22,6 +22,11 @@ class EspeceAnimal
      */
     private $libelle;
 
+    /**
+     * @ORM\Column(type="string", length=2)
+     */
+    private $codeAnimal;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ class EspeceAnimal
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getCodeAnimal(): ?string
+    {
+        return $this->codeAnimal;
+    }
+
+    public function setCodeAnimal(string $codeAnimal): self
+    {
+        $this->codeAnimal = $codeAnimal;
 
         return $this;
     }
