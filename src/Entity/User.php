@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,7 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email
      */
     private $email;
 
@@ -32,26 +35,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(
+     *     min=6,
+     *     minMessage="Mot de passe trop court")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=20, unique=true)
+     * @Assert\Length(
+     *     min=5,
+     *     max = 20,
+     *     maxMessage="Le pseudo ne peut dépasser 20 caractères",
+     *     minMessage="Le pseudo doit contenir au moins 5 caractères")
      */
     private $pseudo;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     max=50,
+     *     maxMessage="Votre nom ne peut contenir au maximum 50 caractères")
+     * @Assert\Regex(
+     *     pattern="/^[a-z ,.'-]+$/i",
+     *     message="Nom incorrect")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     max=50,
+     *     maxMessage="Votre prénom ne peut contenir au maximum 50 caractères")
+     * @Assert\Regex(
+     *     pattern="/^[a-z ,.'-]+$/i",
+     *     message="Prénom incorrect")
      */
     private $prenom;
 
     /**
+     *
      * @ORM\Column(type="string", length=20)
+     * @Assert\Regex(
+     *     pattern="/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/",
+     *     message="Le format de téléphone est incorrect")
      */
     private $telephone;
 

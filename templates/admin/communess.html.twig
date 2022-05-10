@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin : Communes{% endblock %}
+
+{% block body %}
+
+<div id="app">
+
+
+    {% verbatim %}
+
+
+                <div class="col-2 pt-2">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newPlace"><i class="fa fa-plus"></i></button>
+                </div>
+               <div v-if="placeId">
+    {% endverbatim %}
+
+    <div class="col-6 offset-3">
+        <h2>Gestion des Communes</h2>
+        <form action="{{path('app_communes')}}" method="post">
+
+            <div class="row">
+                <div class="col-6 offset-0 ">
+                    <div class="form-floating">
+                        <input type="text" name="search" id="search" placeholder="Recherche un departement"
+                               class="form-control">
+                        <label for="search">Rechercher un Commune</label>
+                    </div>
+                </div>
+
+                <div class="col-2 offset-1">
+                    <button type="submit" class="btn btn-primary my-auto">Rechercher</button>
+                </div>
+                <div class="col-2 offset-1">
+                <a href="" class="btn btn-success">
+                    <i class="fa fa-plus"></i>
+                </a>
+                </div>
+            </div>
+        </form>
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>Commune</th>
+                <th>Code postal</th>
+                <th>Département</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in communes %}
+                <tr>
+                    <th>
+                        <input type="text" id="communeNom{{ c.id }}" readonly class="form-control-plaintext"
+                               value="{{ c.nom }}">
+                    </th>
+                    <th>
+                        <input type="text" id="communeCodeP{{ c.id }}" readonly class="form-control-plaintext"
+                               value="{{ c.codePostal }}">
+                    </th>
+                    <th>
+                        <input type="text" id="communeDeprtement{{ c.id }}" readonly class="form-control-plaintext"
+                               value="{{ c.departements.nom }}">
+                    </th>
+                    <th>
+                        <button id="update{{ c.id }}" class="btn btn-secondary update"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">
+                            <i class="fa fa-trash-can"></i>
+                        </button>
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+

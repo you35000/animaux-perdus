@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Departement;
-use App\Repository\DepartementRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +14,7 @@ class AdminController extends AbstractController
 {
 
     /**
-     * @Route("/utilisateurs", name="utilisateurs")
+     * @Route("/utilisateurs", name="app_utilisateurs")
      */
     public function utilisateurs(UserRepository $userRepository): Response
     {
@@ -24,13 +22,7 @@ class AdminController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
-    /**
-     * @Route("/departements", name="departements")
-     */
-    public function departements(DepartementRepository $departementRepository): Response
-    {
-        return $this->render('admin/departements.html.twig', [
-           'departements'=> $departementRepository->findAll(),
-        ]);
-    }
+
+
+
 }

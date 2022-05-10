@@ -44,8 +44,8 @@
     {% endverbatim %}
 
     <div class="col-6 offset-3">
-        <h2>Gestion de Départements</h2>
-        <form action="{{path('departements')}}" method="post">
+        <h2>Gestion des Départements</h2>
+        <form action="{{path('app_departements')}}" method="post">
 
             <div class="row">
                 <div class="col-6 offset-0 ">
@@ -70,14 +70,20 @@
             <thead>
             <tr>
                 <th>département</th>
+                <th>Numéro</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             {% for d in departements %}
                 <tr>
-                    <th><input type="text" id="departementNom{{ d.id }}" readonly class="form-control-plaintext"
+                    <th>
+                        <input type="text" id="departementNom{{ d.id }}" readonly class="form-control-plaintext"
                                value="{{ d.nom }}">
+                    </th>
+                    <th>
+                        <input type="text" id="departementNum{{ d.id }}" readonly class="form-control-plaintext"
+                               value="{{ d.numero }}">
                     </th>
                     <th>
                         <button id="update{{ d.id }}" class="btn btn-secondary update"

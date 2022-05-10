@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
 
+
     /**
      * @Route("/new", name="user_new", methods={"GET", "POST"})
      */
@@ -29,7 +30,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user);
 
-            return $this->redirectToRoute('list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/new.html.twig', [

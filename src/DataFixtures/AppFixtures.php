@@ -31,18 +31,18 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
-        //$this->addUser();
-//        $this->addEtat();
+        $this->addUser();
+        $this->addEtat();
 //                    $this->addDeclaration();
 //                    $this->addSecteur();
 
         $this->addDepartement();
         $this->addCommune();
-//                    $this->addAnimal();
-//        $this->addCouleur();
+//        $this->addAnimal();
+        $this->addCouleur();
 //
-//      $this->addEspeceAnimal();
-//        $this->addRace();
+      $this->addEspeceAnimal();
+        $this->addRace();
 
     }
 
@@ -93,25 +93,23 @@ class AppFixtures extends Fixture
         $etat->setLibelle('Trouvé');
         $this->manager->persist($etat);
 
+        $etat = new Etat();
+        $etat->setLibelle('Archivée');
+        $this->manager->persist($etat);
+
         $this->manager->flush();
     }
-
-
-
-
-
-
 
     public function addEspeceAnimal()
     {
         $especeAnimal = new EspeceAnimal();
         $especeAnimal->setLibelle('Chien');
-//        $especeAnimal->setId('1');
+        $especeAnimal->setCodeAnimal('DO');
         $this->manager->persist($especeAnimal);
 
         $especeAnimal = new EspeceAnimal();
         $especeAnimal->setLibelle('Chat');
-//        $especeAnimal->setId('2');
+        $especeAnimal->setCodeAnimal('CA');
         $this->manager->persist($especeAnimal);
 
         $this->manager->flush();
@@ -191,7 +189,6 @@ class AppFixtures extends Fixture
 
     public function addDepartement()
     {
-        $faker = Factory::create('fr_FR');
         $dep= new Departement();
         $dep->setNom('Ille-et-Vilaine');
         $dep->setNumero('35');
@@ -214,16 +211,18 @@ class AppFixtures extends Fixture
 
         $this->manager->flush();
     }
+
     public function addCommune()
     {
         $faker = Factory::create('fr_FR');
         $departement = $this->manager->getRepository(Departement::class)->findAll();
         for ($i = 0; $i < 20; $i++) {
-
+            $city = $this->faker->city;
+            $postcode = $this->faker->postcode;
             $commune= new Commune();
-            $commune->setNom($this->faker->city)
-                ->setCodepostal($this->faker->postcode)
-                -> $this->setDepartements($this->faker->randomElement($departement));
+            $commune->setNom($city)
+                ->setCodepostal($postcode)
+                ->setDepartements($this->faker->randomElement($departement));
             $this->manager->persist($commune);
         }
         $this->manager->flush();
