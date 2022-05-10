@@ -35,13 +35,14 @@ class AppFixtures extends Fixture
 //        $this->addEtat();
 //                    $this->addDeclaration();
 //                    $this->addSecteur();
-//                    $this->addCommune();
-//        $this->addDepartement();
+
+        $this->addDepartement();
+        $this->addCommune();
 //                    $this->addAnimal();
 //        $this->addCouleur();
 //
-      $this->addEspeceAnimal();
-        $this->addRace();
+//      $this->addEspeceAnimal();
+//        $this->addRace();
 
     }
 
@@ -97,31 +98,7 @@ class AppFixtures extends Fixture
 
 
 
-    public function addDepartement()
-    {
-        $faker = Factory::create('fr_FR');
-            $dep= new Departement();
-        $dep->setNom('Ille-et-Vilaine');
-        $dep->setNumero('35');
-            $this->manager->persist($dep);
 
-        $dep= new Departement();
-        $dep->setNom('Finistère ');
-        $dep->setNumero('29');
-            $this->manager->persist($dep);
-
-        $dep= new Departement();
-        $dep->setNom('Morbihan ');
-        $dep->setNumero('56');
-            $this->manager->persist($dep);
-
-        $dep= new Departement();
-        $dep->setNom('Côtes-d Armor');
-        $dep->setNumero('22');
-            $this->manager->persist($dep);
-
-        $this->manager->flush();
-    }
 
 
 
@@ -155,11 +132,8 @@ class AppFixtures extends Fixture
 
     public function addRace()
     {
-
-
         $faker = Factory::create('fr_FR');
         $especes = $this-> manager->getRepository(EspeceAnimal::class)->findAll();
-
 
         $race= new Race();
         $race->setNom('Affenpinscher');
@@ -214,18 +188,44 @@ class AppFixtures extends Fixture
         $this->manager->flush();
     }
 
-//    public function addCommune()
-//    {
-//        $faker = Factory::create('fr_FR');
-//        $departement = $this->manager->getRepository(Departement::class)->findAll();
-//        for ($i = 0; $i < 20; $i++) {
-//
-//            $commune= new Commune();
-//            $commune->setNom($this->faker->city)
-//                ->setCodepostal($this->faker->postcode)
-//                -> $this->setDepartements_id($this->faker->randomElement($departement));
-//            $this->manager->persist($commune);
-//        }
-//        $this->manager->flush();
-//    }
+
+    public function addDepartement()
+    {
+        $faker = Factory::create('fr_FR');
+        $dep= new Departement();
+        $dep->setNom('Ille-et-Vilaine');
+        $dep->setNumero('35');
+        $this->manager->persist($dep);
+
+        $dep= new Departement();
+        $dep->setNom('Finistère ');
+        $dep->setNumero('29');
+        $this->manager->persist($dep);
+
+        $dep= new Departement();
+        $dep->setNom('Morbihan ');
+        $dep->setNumero('56');
+        $this->manager->persist($dep);
+
+        $dep= new Departement();
+        $dep->setNom('Côtes-d Armor');
+        $dep->setNumero('22');
+        $this->manager->persist($dep);
+
+        $this->manager->flush();
+    }
+    public function addCommune()
+    {
+        $faker = Factory::create('fr_FR');
+        $departement = $this->manager->getRepository(Departement::class)->findAll();
+        for ($i = 0; $i < 20; $i++) {
+
+            $commune= new Commune();
+            $commune->setNom($this->faker->city)
+                ->setCodepostal($this->faker->postcode)
+                -> $this->setDepartements($this->faker->randomElement($departement));
+            $this->manager->persist($commune);
+        }
+        $this->manager->flush();
+    }
 }
