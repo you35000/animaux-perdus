@@ -2,23 +2,20 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DeclarationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-/**
- * @Route("/annonces")
- */
+
 class DeclarationController extends AbstractController
 {
     /**
-     * @Route("/declaration", name="app_declaration")
+     * @Route("/", name="app_declaration")
      */
-    public function index(Request $request, EntityManagerInterface $emgr): Response
+    public function annones(DeclarationRepository $declarationRepository): Response
     {
-        return $this->render('declaration/list.html.twig', [
-            'controller_name' => 'DeclarationController',
+        return $this->render('home/accueil.html.twig', [
+            'annonces'=> $declarationRepository->findAll(),
         ]);
     }
 }

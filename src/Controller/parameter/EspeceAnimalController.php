@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 /**
- * @Route("/parameter/admin")
+ * @Route("/admin/parameter")
  */
 class EspeceAnimalController extends AbstractController
 {

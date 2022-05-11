@@ -59,7 +59,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->add($user);
-            return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_utilisateurs', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('user/edit.html.twig', [
@@ -76,7 +76,7 @@ class UserController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $userRepository->remove($user);
         }
-
-        return $this->redirectToRoute('user_index', [], Response::HTTP_SEE_OTHER);
+//        user_index
+        return $this->redirectToRoute('app_utilisateurs', [], Response::HTTP_SEE_OTHER);
     }
 }
