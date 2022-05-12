@@ -3,12 +3,15 @@
 namespace App\DataFixtures;
 
 
+use App\Entity\Animal;
 use App\Entity\Commune;
 use App\Entity\Couleur;
+use App\Entity\Declaration;
 use App\Entity\Departement;
 use App\Entity\EspeceAnimal;
 use App\Entity\Etat;
 use App\Entity\Race;
+use App\Entity\Secteur;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,19 +34,16 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
-        $this->addUser();
-        $this->addEtat();
-//                    $this->addDeclaration();
-//                    $this->addSecteur();
-
-        $this->addDepartement();
-        $this->addCommune();
-//        $this->addAnimal();
-        $this->addCouleur();
-//
-      $this->addEspeceAnimal();
-        $this->addRace();
-
+//        $this->addUser();
+//        $this->addEtat();
+//        $this->addDepartement();
+//        $this->addCommune();
+//        $this->addSecteur();
+//        $this->addCouleur();
+//        $this->addEspeceAnimal();
+//        $this->addRace();
+        $this->addAnimal();
+        //$this->addDeclaration();
     }
 
     public function addUser()
@@ -225,6 +225,99 @@ class AppFixtures extends Fixture
                 ->setDepartements($this->faker->randomElement($departement));
             $this->manager->persist($commune);
         }
+        $this->manager->flush();
+    }
+
+    public function addSecteur()
+    {
+        $faker = Factory::create('fr_FR');
+        $commune = $this->manager->getRepository(Commune::class)->findAll();
+        $secteurs = ['Gare sud','Gare Nord','Centre','Est','Ouest','Blose','Republique','St Anne','Université','LeMarché'];
+        for ($i = 0; $i < 20; $i++) {
+
+            $secteur= new Secteur();
+            $secteur->setNom($this->faker->randomElement($secteurs))
+                   ->setAdresse($this->faker->streetAddress)
+                   ->setCommunes($this->faker->randomElement($commune))
+                   ->setLongitude($this->faker->longitude)
+                   ->setLatitude($this->faker->latitude);
+            $this->manager->persist($secteur);
+        }
+        $this->manager->flush();
+    }
+
+
+    public function addAnimal()
+    {
+        $faker = Factory::create('fr_FR');
+        $espece = $this->manager->getRepository(EspeceAnimal::class)->findAll();
+        $race = $this->manager->getRepository(Race::class)->findAll();
+        $couleur = $this->manager->getRepository(Couleur::class)->findAll();
+        $nom = ['AA','BB','CC','DD','EE','FF','GG','HH','KK','LL','MM','NN','OO','PP','QQ','SS','RR','SS','ZZ','YY','VV','JJ','UU','XX','WW'];
+        $croisement = [1,2,3];
+        $sexe = [1,2,3];
+        $castre = [1,2,3];
+        $puce = [1,2,3];
+        $tatouage = [1,2,3];
+        $collier = [1];
+        $typeCollier = [1,2,3,4,5];
+        $silhouette = [1,2,3,4];
+        $taille = [1,2,3,4];
+        $polis = [1,2,3,4,5,6];
+        $age = [5,8];
+        $anOuMois = [1,2];
+
+        for ($i = 0; $i < 20; $i++) {
+            $animal = new Animal();
+            $animal ->setRaces($faker->randomElement($race))
+
+                ->setNom($faker->randomElement($nom))
+                ->setSexe($faker->randomElement($sexe))
+                ->setCastre($faker->randomElement($castre))
+                ->setCroisement($faker->randomElement($croisement))
+                ->setPuceElectro($faker->randomElement($puce))
+                ->setTatouage($faker->randomElement($tatouage))
+                ->setCollier($faker->randomElement($collier))
+                ->setTypeCollier($faker->randomElement($typeCollier))
+                ->setSilhouette($faker->randomElement($silhouette))
+                ->setTaille($faker->randomElement($taille))
+                ->setPoils($faker->randomElement($polis))
+                ->setAge($faker->randomElement($age))
+                ->setAnOuMois($faker->randomElement($anOuMois))
+                ->setCouleurs($faker->randomElement($couleur));
+//            if ($espece->codeAnimal == 'DO'){
+                $animal->setEspeces($this->faker->randomElement($race));
+//            }
+                $this->manager->persist($animal);
+        }
+
+                $this->manager->flush();
+    }
+
+
+
+
+
+    public function addDeclaration()
+    {
+        $faker = Factory::create('fr_FR');
+        $etats = $this->manager->getRepository(Etat::class)->findAll();
+//        $users = $this->manager->getRepository(User::class)->findAll();
+        $secteurs = $this->manager->getRepository(Secteur::class)->findAll();
+
+
+        for ($i = 0; $i < 50; $i++) {
+
+            $dateHeure = $faker->dateTimeThisYear();
+            $declaration = new Departement();
+            $declaration->setSecteurs($this->faker->randomElement($secteurs))
+            ->setDateHeureDipar(date_add($dateHeure, date_interval_create_from_date_string('9 months')))
+                ->setUsers($faker->randomElement($this->manager->getRepository(User::class)->findAll()))
+                ->setEtats($faker->randomElement($etats));
+
+            $this->manager->persist($declaration);
+        }
+
         $this->manager->flush();
     }
 }

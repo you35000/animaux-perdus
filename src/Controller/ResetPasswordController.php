@@ -15,6 +15,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
@@ -80,7 +81,7 @@ class ResetPasswordController extends AbstractController
      *
      * @Route("/reset/{token}", name="app_reset_password")
      */
-    public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, string $token = null): Response
+    public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, TranslatorInterface $translator, string $token = null): Response
     {
         if ($token) {
             // We store the token in session and remove it from the URL, to avoid the URL being
@@ -100,8 +101,10 @@ class ResetPasswordController extends AbstractController
         } catch (ResetPasswordExceptionInterface $e) {
             $this->addFlash('reset_password_error', sprintf(
                 '%s - %s',
-                ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE,
-                $e->getReason()
+                $translator->trans(ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle'),
+                $translator->trans($e->getReason(), [], 'ResetPasswordBundle')
+//                ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE,
+//                $e->getReason()
             ));
 
             return $this->redirectToRoute('app_forgot_password_request');
@@ -127,7 +130,7 @@ class ResetPasswordController extends AbstractController
             // The session is cleaned up after the password has been changed.
             $this->cleanSessionAfterReset();
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_declaration');
         }
 
         return $this->render('reset_password/reset.html.twig', [

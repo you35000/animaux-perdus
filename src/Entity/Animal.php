@@ -100,6 +100,11 @@ class Animal
      */
     private $especes;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $croisement;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -293,6 +298,18 @@ class Animal
     public function setEspeces(?EspeceAnimal $especes): self
     {
         $this->especes = $especes;
+
+        return $this;
+    }
+
+    public function getCroisement(): ?int
+    {
+        return $this->croisement;
+    }
+
+    public function setCroisement(int $croisement): self
+    {
+        $this->croisement = $croisement;
 
         return $this;
     }
