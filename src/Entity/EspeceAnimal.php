@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EspeceAnimalRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,9 +25,14 @@ class EspeceAnimal
     private $libelle;
 
     /**
-     * @ORM\Column(type="string", length=2)
+     * @ORM\OneToMany(targetEntity=Race::class, mappedBy="especes")
      */
-    private $codeAnimal;
+    private $races;
+
+    public function __construct()
+    {
+        $this->races = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -44,15 +51,35 @@ class EspeceAnimal
         return $this;
     }
 
-    public function getCodeAnimal(): ?string
+    /**
+     * @return Collection<int, Race>
+     */
+    public function getRaces(): Collection
     {
-        return $this->codeAnimal;
+        return $this->races;
     }
 
-    public function setCodeAnimal(string $codeAnimal): self
+    public function addRace(Race $race): self
     {
-        $this->codeAnimal = $codeAnimal;
+        if (!$this->races->contains($race)) {
+            $this->races[] = $race;
+            $race->setEspeces($this);
+        }
 
         return $this;
     }
+
+    public function removeRace(Race $race): self
+    {
+        if ($this->races->removeElement($race)) {
+            // set the owning side to null (unless already changed)
+            if ($race->getEspeces() === $this) {
+                $race->setEspeces(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

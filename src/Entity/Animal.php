@@ -23,49 +23,41 @@ class Animal
     private $nom;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $sexe;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $castre;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $puceElectro;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $tatouage;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $collier;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $typeCollier;
+
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=25)
      */
     private $silhouette;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=25)
      */
     private $taille;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $poils;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -73,7 +65,7 @@ class Animal
     private $age;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="boolean")
      */
     private $anOuMois;
 
@@ -90,20 +82,27 @@ class Animal
 
     /**
      * @ORM\ManyToOne(targetEntity=Race::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $races;
 
     /**
-     * @ORM\ManyToOne(targetEntity=EspeceAnimal::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $especes;
-
-    /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     private $croisement;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Poil::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $poils;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TypeCollier::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $TypeColliers;
+
 
     public function getId(): ?int
     {
@@ -182,50 +181,27 @@ class Animal
         return $this;
     }
 
-    public function getTypeCollier(): ?int
-    {
-        return $this->typeCollier;
-    }
 
-    public function setTypeCollier(?int $typeCollier): self
-    {
-        $this->typeCollier = $typeCollier;
-
-        return $this;
-    }
-
-    public function getSilhouette(): ?int
+    public function getSilhouette(): ?string
     {
         return $this->silhouette;
     }
 
-    public function setSilhouette(?int $silhouette): self
+    public function setSilhouette(?string $silhouette): self
     {
         $this->silhouette = $silhouette;
 
         return $this;
     }
 
-    public function getTaille(): ?int
+    public function getTaille(): ?string
     {
         return $this->taille;
     }
 
-    public function setTaille(?int $taille): self
+    public function setTaille(?string $taille): self
     {
         $this->taille = $taille;
-
-        return $this;
-    }
-
-    public function getPoils(): ?int
-    {
-        return $this->poils;
-    }
-
-    public function setPoils(?int $poils): self
-    {
-        $this->poils = $poils;
 
         return $this;
     }
@@ -290,18 +266,6 @@ class Animal
         return $this;
     }
 
-    public function getEspeces(): ?EspeceAnimal
-    {
-        return $this->especes;
-    }
-
-    public function setEspeces(?EspeceAnimal $especes): self
-    {
-        $this->especes = $especes;
-
-        return $this;
-    }
-
     public function getCroisement(): ?int
     {
         return $this->croisement;
@@ -313,4 +277,29 @@ class Animal
 
         return $this;
     }
+
+    public function getPoils(): ?Poil
+    {
+        return $this->poils;
+    }
+
+    public function setPoils(?Poil $poils): self
+    {
+        $this->poils = $poils;
+
+        return $this;
+    }
+
+    public function getTypeColliers(): ?TypeCollier
+    {
+        return $this->TypeColliers;
+    }
+
+    public function setTypeColliers(?TypeCollier $TypeColliers): self
+    {
+        $this->TypeColliers = $TypeColliers;
+
+        return $this;
+    }
+
 }

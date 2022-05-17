@@ -10,8 +10,10 @@ use App\Entity\Declaration;
 use App\Entity\Departement;
 use App\Entity\EspeceAnimal;
 use App\Entity\Etat;
+use App\Entity\Poil;
 use App\Entity\Race;
 use App\Entity\Secteur;
+use App\Entity\TypeCollier;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,16 +36,18 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
-//        $this->addUser();
-//        $this->addEtat();
-//        $this->addDepartement();
-//        $this->addCommune();
-//        $this->addSecteur();
-//        $this->addCouleur();
-//        $this->addEspeceAnimal();
-//        $this->addRace();
+        $this->addUser();
+        $this->addEtat();
+        $this->addPoil();
+        $this->addTypeCollier();
+        $this->addDepartement();
+        $this->addCommune();
+        $this->addSecteur();
+        $this->addEspeceAnimal();
+        $this->addCouleur();
+        $this->addRace();
         $this->addAnimal();
-        //$this->addDeclaration();
+//        $this->addDeclaration();
     }
 
     public function addUser()
@@ -60,7 +64,7 @@ class AppFixtures extends Fixture
         $this->manager->persist($user);
 
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $prenom = $this->faker->firstName;
             $nom = $this->faker->lastName;
             $pseudo = $prenom . ' ' . substr($nom, 0, 1) . '.';
@@ -100,16 +104,62 @@ class AppFixtures extends Fixture
         $this->manager->flush();
     }
 
+    public function addTypeCollier()
+    {
+        $typeCollier = new TypeCollier();
+        $typeCollier->setLibelle('Chainette');
+        $this->manager->persist($typeCollier);
+
+        $typeCollier = new TypeCollier();
+        $typeCollier->setLibelle('Cuir');
+        $this->manager->persist($typeCollier);
+
+        $typeCollier = new TypeCollier();
+        $typeCollier->setLibelle('Nylon');
+        $this->manager->persist($typeCollier);
+
+        $typeCollier = new TypeCollier();
+        $typeCollier->setLibelle('Plastique');
+        $this->manager->persist($typeCollier);
+
+        $this->manager->flush();
+    }
+
+    public function addPoil()
+    {
+        $poil = new Poil();
+        $poil->setLibelle('Courts');
+        $this->manager->persist($poil);
+
+        $poil = new Poil();
+        $poil->setLibelle('Longs');
+        $this->manager->persist($poil);
+
+        $poil = new Poil();
+        $poil->setLibelle('Mi-longs');
+        $this->manager->persist($poil);
+
+        $poil = new Poil();
+        $poil->setLibelle('Raides');
+        $this->manager->persist($poil);
+
+        $poil = new Poil();
+        $poil->setLibelle('Frisés');
+        $this->manager->persist($poil);
+
+        $this->manager->flush();
+    }
+
     public function addEspeceAnimal()
     {
         $especeAnimal = new EspeceAnimal();
         $especeAnimal->setLibelle('Chien');
-        $especeAnimal->setCodeAnimal('DO');
+//        $especeAnimal->setCode('DO');
         $this->manager->persist($especeAnimal);
 
         $especeAnimal = new EspeceAnimal();
         $especeAnimal->setLibelle('Chat');
-        $especeAnimal->setCodeAnimal('CA');
+//        $especeAnimal->setCode('CA');
         $this->manager->persist($especeAnimal);
 
         $this->manager->flush();
@@ -136,51 +186,61 @@ class AppFixtures extends Fixture
         $race= new Race();
         $race->setNom('Affenpinscher');
         $race->setEspeces ($especes[0]);
+        $race->setCode('DO');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('Airedale Terrier ');
         $race->setEspeces($especes[0]);
+        $race->setCode('DO');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('Akita Américain ');
         $race->setEspeces($especes[0]);
+        $race->setCode('DO');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('American Staffordshire Terrier');
         $race->setEspeces($especes[0]);
+        $race->setCode('DO');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('Ancien chien d arrêt danois');
         $race->setEspeces($especes[0]);
+        $race->setCode('DO');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('American Bobtail à poil long');
         $race->setEspeces($especes[1]);
+        $race->setCode('CA');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('American Bobtail à poil court ');
         $race->setEspeces($especes[1]);
+        $race->setCode('CA');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('Abyssin ');
         $race->setEspeces($especes[1]);
+        $race->setCode('CA');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('American Curl à poil long');
         $race->setEspeces($especes[1]);
+        $race->setCode('CA');
         $this->manager->persist($race);
 
         $race= new Race();
         $race->setNom('Burmese Américain');
         $race->setEspeces($especes[1]);
+        $race->setCode('CA');
         $this->manager->persist($race);
 
         $this->manager->flush();
@@ -250,74 +310,67 @@ class AppFixtures extends Fixture
     public function addAnimal()
     {
         $faker = Factory::create('fr_FR');
-        $espece = $this->manager->getRepository(EspeceAnimal::class)->findAll();
+
         $race = $this->manager->getRepository(Race::class)->findAll();
         $couleur = $this->manager->getRepository(Couleur::class)->findAll();
+        $typeCollier = $this->manager->getRepository(TypeCollier::class)->findAll();
+        $polis = $this->manager->getRepository(Poil::class)->findAll();
         $nom = ['AA','BB','CC','DD','EE','FF','GG','HH','KK','LL','MM','NN','OO','PP','QQ','SS','RR','SS','ZZ','YY','VV','JJ','UU','XX','WW'];
-        $croisement = [1,2,3];
-        $sexe = [1,2,3];
-        $castre = [1,2,3];
-        $puce = [1,2,3];
-        $tatouage = [1,2,3];
-        $collier = [1];
-        $typeCollier = [1,2,3,4,5];
-        $silhouette = [1,2,3,4];
-        $taille = [1,2,3,4];
-        $polis = [1,2,3,4,5,6];
+        $silhouette = ['Maigre','Normale','Dodue'];
+        $taille = ['Petite','Moyenne','Grande'];
+        $croisement = [1,0];
+        $sexe = [1,0];
+        $castre = [1,0];
+        $puce = [1,0];
+        $tatouage = [1,0];
+        $collier = [1,0];
         $age = [5,8];
         $anOuMois = [1,2];
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $animal = new Animal();
-            $animal ->setRaces($faker->randomElement($race))
-
-                ->setNom($faker->randomElement($nom))
+            $animal ->setNom($faker->randomElement($nom))
                 ->setSexe($faker->randomElement($sexe))
                 ->setCastre($faker->randomElement($castre))
                 ->setCroisement($faker->randomElement($croisement))
                 ->setPuceElectro($faker->randomElement($puce))
                 ->setTatouage($faker->randomElement($tatouage))
                 ->setCollier($faker->randomElement($collier))
-                ->setTypeCollier($faker->randomElement($typeCollier))
+                ->setTypeColliers($faker->randomElement($typeCollier))
                 ->setSilhouette($faker->randomElement($silhouette))
                 ->setTaille($faker->randomElement($taille))
                 ->setPoils($faker->randomElement($polis))
                 ->setAge($faker->randomElement($age))
                 ->setAnOuMois($faker->randomElement($anOuMois))
-                ->setCouleurs($faker->randomElement($couleur));
-//            if ($espece->codeAnimal == 'DO'){
-                $animal->setEspeces($this->faker->randomElement($race));
-//            }
+                ->setCouleurs($faker->randomElement($couleur))
+               ->setRaces($faker->randomElement($race));
+
                 $this->manager->persist($animal);
         }
 
                 $this->manager->flush();
     }
 
-
-
-
-
-    public function addDeclaration()
-    {
-        $faker = Factory::create('fr_FR');
-        $etats = $this->manager->getRepository(Etat::class)->findAll();
+//    public function addDeclaration()
+//    {
+//        $faker = Factory::create('fr_FR');
+//        $etats = $this->manager->getRepository(Etat::class)->findAll();
 //        $users = $this->manager->getRepository(User::class)->findAll();
-        $secteurs = $this->manager->getRepository(Secteur::class)->findAll();
-
-
-        for ($i = 0; $i < 50; $i++) {
-
-            $dateHeure = $faker->dateTimeThisYear();
-            $declaration = new Departement();
-            $declaration->setSecteurs($this->faker->randomElement($secteurs))
-            ->setDateHeureDipar(date_add($dateHeure, date_interval_create_from_date_string('9 months')))
-                ->setUsers($faker->randomElement($this->manager->getRepository(User::class)->findAll()))
-                ->setEtats($faker->randomElement($etats));
-
-            $this->manager->persist($declaration);
-        }
-
-        $this->manager->flush();
-    }
+//        $secteurs = $this->manager->getRepository(Secteur::class)->findAll();
+//
+//
+//        for ($i = 0; $i < 50; $i++) {
+//
+//            $dateHeure = $faker->dateTimeThisYear();
+//            $declaration = new Departement();
+//            $declaration->setSecteurs($this->faker->randomElement($secteurs))
+//            ->setDateHeureDipar(date_add($dateHeure, date_interval_create_from_date_string('9 months')))
+//                ->setUsers($faker->randomElement($this->manager->getRepository(User::class)->findAll()))
+//                ->setEtats($faker->randomElement($etats));
+//
+//            $this->manager->persist($declaration);
+//        }
+//
+//        $this->manager->flush();
+//    }
 }
