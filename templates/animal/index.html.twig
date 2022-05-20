@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animal index{% endblock %}
+
+{% block body %}
+    <h1>Animal index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>Sexe</th>
+            <th>Castre</th>
+            <th>PuceElectro</th>
+            <th>Tatouage</th>
+            <th>Collier</th>
+            <th>TypeCollier</th>
+            <th>Silhouette</th>
+            <th>Taille</th>
+            <th>Poils</th>
+            <th>Age</th>
+            <th>AnOuMois</th>
+            <th>Photo</th>
+            <th>Croisement</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for animal in animals %}
+            <tr>
+                <td>{{ animal.id }}</td>
+                <td>{{ animal.nom }}</td>
+                <td>
+                    {{ animal.getSexeLibelle() }}
+                </td>
+                <td>
+                    {% if animal.castre %}
+                        <p> X </p>
+                    {% endif %}</td>
+                <td>{% if animal.puceElectro %}
+                        <p> X </p>
+                    {% endif %}</td>
+                <td>
+                    {% if animal.tatouage %}
+                        <p> X </p>
+                    {% endif %}</td>
+                <td>
+                    {% if animal.collier %}
+                        <p> X </p>
+                    {% endif %}
+
+                <td>{{ animal.typeColliers }}</td>
+                <td>{{ animal.silhouette }}</td>
+                <td>{{ animal.taille }}</td>
+                <td>{{ animal.poils }}</td>
+                <td>{{ animal.age }}</td>
+                <td>{{ animal.anOuMois }}</td>
+                <td>{{ animal.photo }}</td>
+                <td>{{ animal.croisements }}</td>
+                <td>
+                    <a href="{{ path('app_animal_show', {'id': animal.id}) }}">show</a>
+                    <a href="{{ path('app_animal_edit', {'id': animal.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_animal_new') }}">Create new</a>
+{% endblock %}
