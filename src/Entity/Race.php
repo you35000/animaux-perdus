@@ -33,6 +33,10 @@ class Race
      */
     private $especes;
 
+    public function __toString() {
+        return $this->getNom();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

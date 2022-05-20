@@ -10,6 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Animal
 {
+    const SEXE = [
+        "M" => "Male",
+        "F" => "Femelle",
+    ];
+
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -87,11 +93,6 @@ class Animal
     private $races;
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $croisement;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Poil::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -103,6 +104,23 @@ class Animal
      */
     private $TypeColliers;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Croisement::class, inversedBy="animals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $croisements;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Silhouette::class, inversedBy="animals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $silhouettes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Taille::class, inversedBy="animals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tailles;
 
     public function getId(): ?int
     {
@@ -266,18 +284,6 @@ class Animal
         return $this;
     }
 
-    public function getCroisement(): ?int
-    {
-        return $this->croisement;
-    }
-
-    public function setCroisement(int $croisement): self
-    {
-        $this->croisement = $croisement;
-
-        return $this;
-    }
-
     public function getPoils(): ?Poil
     {
         return $this->poils;
@@ -298,6 +304,48 @@ class Animal
     public function setTypeColliers(?TypeCollier $TypeColliers): self
     {
         $this->TypeColliers = $TypeColliers;
+
+        return $this;
+    }
+
+    public function getSexeLibelle(): string {
+        $currentSexe = $this->getSexe();
+
+        return ($currentSexe) ? self::SEXE['M'] : self::SEXE['F'];
+    }
+
+    public function getCroisements(): ?Croisement
+    {
+        return $this->croisements;
+    }
+
+    public function setCroisements(?Croisement $croisements): self
+    {
+        $this->croisements = $croisements;
+
+        return $this;
+    }
+
+    public function getSilhouettes(): ?Silhouette
+    {
+        return $this->silhouettes;
+    }
+
+    public function setSilhouettes(?Silhouette $silhouettes): self
+    {
+        $this->silhouettes = $silhouettes;
+
+        return $this;
+    }
+
+    public function getTailles(): ?Taille
+    {
+        return $this->tailles;
+    }
+
+    public function setTailles(?Taille $tailles): self
+    {
+        $this->tailles = $tailles;
 
         return $this;
     }

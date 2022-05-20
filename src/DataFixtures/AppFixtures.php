@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 use App\Entity\Animal;
 use App\Entity\Commune;
 use App\Entity\Couleur;
+use App\Entity\Croisement;
 use App\Entity\Declaration;
 use App\Entity\Departement;
 use App\Entity\EspeceAnimal;
@@ -13,12 +14,15 @@ use App\Entity\Etat;
 use App\Entity\Poil;
 use App\Entity\Race;
 use App\Entity\Secteur;
+use App\Entity\Silhouette;
+use App\Entity\Taille;
 use App\Entity\TypeCollier;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
+use mysql_xdevapi\Table;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker\Factory;
 class AppFixtures extends Fixture
@@ -36,17 +40,20 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
-        $this->addUser();
-        $this->addEtat();
-        $this->addPoil();
-        $this->addTypeCollier();
-        $this->addDepartement();
-        $this->addCommune();
-        $this->addSecteur();
-        $this->addEspeceAnimal();
-        $this->addCouleur();
-        $this->addRace();
-        $this->addAnimal();
+//        $this->addUser();
+        $this->addCroisement();
+        $this->addSilhouette();
+        $this->addTaille();
+//        $this->addEtat();
+//        $this->addPoil();
+//        $this->addTypeCollier();
+//        $this->addDepartement();
+//        $this->addCommune();
+//        $this->addSecteur();
+//        $this->addEspeceAnimal();
+//        $this->addCouleur();
+//        $this->addRace();
+//        $this->addAnimal();
 //        $this->addDeclaration();
     }
 
@@ -103,6 +110,55 @@ class AppFixtures extends Fixture
 
         $this->manager->flush();
     }
+
+
+    public function addCroisement()
+    {
+        $croisement = new Croisement();
+        $croisement->setLibelle('Pure race');
+        $this->manager->persist($croisement);
+
+        $croisement = new Croisement();
+        $croisement->setLibelle('Croisé');
+        $this->manager->persist($croisement);
+
+        $this->manager->flush();
+    }
+
+    public function addSilhouette()
+    {
+        $silhouette = new Silhouette();
+        $silhouette->setLibelle('Maigre');
+        $this->manager->persist($silhouette);
+
+        $silhouette = new Silhouette();
+        $silhouette->setLibelle('Normale');
+        $this->manager->persist($silhouette);
+
+        $silhouette = new Silhouette();
+        $silhouette->setLibelle('Dodue');
+        $this->manager->persist($silhouette);
+
+        $this->manager->flush();
+    }
+
+    public function addTaille()
+    {
+        $taille = new Taille();
+        $taille->setLibelle('Petite');
+        $this->manager->persist($taille);
+
+        $taille = new Taille();
+        $taille->setLibelle('Moyenne');
+        $this->manager->persist($taille);
+
+        $taille = new Taille();
+        $taille->setLibelle('Grande');
+        $this->manager->persist($taille);
+
+        $this->manager->flush();
+    }
+
 
     public function addTypeCollier()
     {
@@ -315,10 +371,10 @@ class AppFixtures extends Fixture
         $couleur = $this->manager->getRepository(Couleur::class)->findAll();
         $typeCollier = $this->manager->getRepository(TypeCollier::class)->findAll();
         $polis = $this->manager->getRepository(Poil::class)->findAll();
+        $silhouette = $this->manager->getRepository(Silhouette::class)->findAll();
+        $croisement = $this->manager->getRepository(Croisement::class)->findAll();
+        $taille = $this->manager->getRepository(Table::class)->findAll();
         $nom = ['AA','BB','CC','DD','EE','FF','GG','HH','KK','LL','MM','NN','OO','PP','QQ','SS','RR','SS','ZZ','YY','VV','JJ','UU','XX','WW'];
-        $silhouette = ['Maigre','Normale','Dodue'];
-        $taille = ['Petite','Moyenne','Grande'];
-        $croisement = [1,0];
         $sexe = [1,0];
         $castre = [1,0];
         $puce = [1,0];
@@ -332,13 +388,13 @@ class AppFixtures extends Fixture
             $animal ->setNom($faker->randomElement($nom))
                 ->setSexe($faker->randomElement($sexe))
                 ->setCastre($faker->randomElement($castre))
-                ->setCroisement($faker->randomElement($croisement))
+                ->setCroisements($faker->randomElement($croisement))
                 ->setPuceElectro($faker->randomElement($puce))
                 ->setTatouage($faker->randomElement($tatouage))
                 ->setCollier($faker->randomElement($collier))
                 ->setTypeColliers($faker->randomElement($typeCollier))
                 ->setSilhouette($faker->randomElement($silhouette))
-                ->setTaille($faker->randomElement($taille))
+                ->setTailles($faker->randomElement($taille))
                 ->setPoils($faker->randomElement($polis))
                 ->setAge($faker->randomElement($age))
                 ->setAnOuMois($faker->randomElement($anOuMois))

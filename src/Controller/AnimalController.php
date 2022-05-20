@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,6 +19,44 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AnimalController extends AbstractController
 {
+
+    /**
+     * Renvoie une chaîne JSON avec les races de l'espèce animal avec l'identifiant fourni.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function listRacesAnimalAction(Request $request)
+    {
+        // Get Entity manager and repository
+        $em = $this->getDoctrine()->getManager();
+        $racesRepository = $em->getRepository("AppBundle:Race");
+
+        // Recherche les races qui appartiennent à l'espèce animal' avec l'id donné comme paramètre GET "especeAnimalid"
+        $races = $racesRepository->createQueryBuilder("q")
+            ->where("q.especeAnimal = :especeAnimalid")
+            ->setParameter("especeAnimalid", $request->query->get("especeAnimalid"))
+            ->getQuery()
+            ->getResult();
+
+        // Sérialiser dans un tableau les données dont nous avons besoin, dans ce cas uniquement le nom et l'identifiant
+        // Remarque: vous pouvez également utiliser un sérialiseur, à des fins d'explication, nous le ferons manuellement
+        $responseArray = array();
+
+        foreach($races as $race){
+            $responseArray[] = array(
+                "id" => $race->getId(),
+                "nom" => $race->getNom()
+            );
+        }
+
+        // Renvoie un tableau avec la structure des races de l'identifiant de l'espèce animal fourni
+        return new JsonResponse($responseArray);
+
+
+    }
+
+
     /**
      * @Route("/", name="app_animal_index", methods={"GET"})
      */
@@ -38,8 +77,6 @@ class AnimalController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-
             $animalRepository->add($animal);
             return $this->redirectToRoute('app_animal_index');
         }
@@ -77,7 +114,6 @@ class AnimalController extends AbstractController
         foreach ($races as $race) {
             $rep[$index] = [
                 "id" => $race->getId(),
-                "code" => $race->getCode(),
                 "nom" => $race->getNom(),
             ];
 
@@ -100,17 +136,25 @@ class AnimalController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_animal_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Animal $animal, AnimalRepository $animalRepository): Response
+    public function edit(
+        int $id,
+        Request $request,
+        AnimalRepository $animalRepository
+    ): Response
     {
+        $animal = $animalRepository->find($id);
+
+        if ($animal == null) throw new NotFoundHttpException("L'animal n'existe pas");
+
         $form = $this->createForm(AnimalFormType::class, $animal);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $animalRepository->add($animal);
+//            $animalRepository->add($animal);
             return $this->redirectToRoute('app_animal_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('animal_form_type/edit.html.twig', [
+        return $this->renderForm('animal/edit.html.twig', [
             'animal' => $animal,
             'form' => $form,
         ]);
