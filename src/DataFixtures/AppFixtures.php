@@ -22,7 +22,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use mysql_xdevapi\Table;
+//use mysql_xdevapi\Table;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker\Factory;
 class AppFixtures extends Fixture
@@ -40,20 +40,20 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
-//        $this->addUser();
+        $this->addUser();
         $this->addCroisement();
         $this->addSilhouette();
         $this->addTaille();
-//        $this->addEtat();
-//        $this->addPoil();
-//        $this->addTypeCollier();
-//        $this->addDepartement();
-//        $this->addCommune();
-//        $this->addSecteur();
-//        $this->addEspeceAnimal();
-//        $this->addCouleur();
-//        $this->addRace();
-//        $this->addAnimal();
+        $this->addEtat();
+        $this->addPoil();
+        $this->addTypeCollier();
+        $this->addDepartement();
+        $this->addCommune();
+        $this->addSecteur();
+        $this->addEspeceAnimal();
+        $this->addCouleur();
+        $this->addRace();
+        $this->addAnimal();
 //        $this->addDeclaration();
     }
 
@@ -111,20 +111,6 @@ class AppFixtures extends Fixture
         $this->manager->flush();
     }
 
-
-    public function addCroisement()
-    {
-        $croisement = new Croisement();
-        $croisement->setLibelle('Pure race');
-        $this->manager->persist($croisement);
-
-        $croisement = new Croisement();
-        $croisement->setLibelle('Croisé');
-        $this->manager->persist($croisement);
-
-        $this->manager->flush();
-    }
-
     public function addSilhouette()
     {
         $silhouette = new Silhouette();
@@ -141,6 +127,21 @@ class AppFixtures extends Fixture
 
         $this->manager->flush();
     }
+
+    public function addCroisement()
+    {
+        $croisement = new Croisement();
+        $croisement->setLibelle('Pure race');
+        $this->manager->persist($croisement);
+
+        $croisement = new Croisement();
+        $croisement->setLibelle('Croisé');
+        $this->manager->persist($croisement);
+
+        $this->manager->flush();
+    }
+
+
 
     public function addTaille()
     {
@@ -229,7 +230,7 @@ class AppFixtures extends Fixture
 
             $Couleur= new Couleur();
             $Couleur->setLibelle($this->faker->colorName);
-                $this->manager->persist($Couleur);
+            $this->manager->persist($Couleur);
         }
         $this->manager->flush();
     }
@@ -353,10 +354,10 @@ class AppFixtures extends Fixture
 
             $secteur= new Secteur();
             $secteur->setNom($this->faker->randomElement($secteurs))
-                   ->setAdresse($this->faker->streetAddress)
-                   ->setCommunes($this->faker->randomElement($commune))
-                   ->setLongitude($this->faker->longitude)
-                   ->setLatitude($this->faker->latitude);
+                ->setAdresse($this->faker->streetAddress)
+                ->setCommunes($this->faker->randomElement($commune))
+                ->setLongitude($this->faker->longitude)
+                ->setLatitude($this->faker->latitude);
             $this->manager->persist($secteur);
         }
         $this->manager->flush();
@@ -373,7 +374,7 @@ class AppFixtures extends Fixture
         $polis = $this->manager->getRepository(Poil::class)->findAll();
         $silhouette = $this->manager->getRepository(Silhouette::class)->findAll();
         $croisement = $this->manager->getRepository(Croisement::class)->findAll();
-        $taille = $this->manager->getRepository(Table::class)->findAll();
+        $taille = $this->manager->getRepository(Taille::class)->findAll();
         $nom = ['AA','BB','CC','DD','EE','FF','GG','HH','KK','LL','MM','NN','OO','PP','QQ','SS','RR','SS','ZZ','YY','VV','JJ','UU','XX','WW'];
         $sexe = [1,0];
         $castre = [1,0];
@@ -393,18 +394,18 @@ class AppFixtures extends Fixture
                 ->setTatouage($faker->randomElement($tatouage))
                 ->setCollier($faker->randomElement($collier))
                 ->setTypeColliers($faker->randomElement($typeCollier))
-                ->setSilhouette($faker->randomElement($silhouette))
+                ->setSilhouettes($faker->randomElement($silhouette))
                 ->setTailles($faker->randomElement($taille))
                 ->setPoils($faker->randomElement($polis))
                 ->setAge($faker->randomElement($age))
                 ->setAnOuMois($faker->randomElement($anOuMois))
                 ->setCouleurs($faker->randomElement($couleur))
-               ->setRaces($faker->randomElement($race));
+                ->setRaces($faker->randomElement($race));
 
-                $this->manager->persist($animal);
+            $this->manager->persist($animal);
         }
 
-                $this->manager->flush();
+        $this->manager->flush();
     }
 
 //    public function addDeclaration()

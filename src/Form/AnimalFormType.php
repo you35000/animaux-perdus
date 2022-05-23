@@ -39,6 +39,9 @@ class AnimalFormType extends AbstractType
         $this->em = $em;
     }
 
+
+    // Supprimez la sélection dépendante du buildForm d'origine, car elle sera
+    // // ajoutée dynamiquement ultérieurement, ainsi que le déclencheur
     /**
      * {@inheritdoc}
      */
@@ -101,14 +104,14 @@ class AnimalFormType extends AbstractType
                 'class' => TypeCollier::class,
                 'choice_label' => 'libelle'
             ])
-            ->add('silhouette', EntityType::class, [
+            ->add('silhouettes', EntityType::class, [
                 'class' => Silhouette::class,
                 'label' => 'Silhouette :',
                 'placeholder' => 'Selectionnez la silhouette',
                 'choice_label' => 'libelle'
 
             ])
-            ->add('taille', EntityType::class, [
+            ->add('tailles', EntityType::class, [
                 'label' => 'Taille :',
                 'placeholder' => 'Selectionnez la taille',
                 'class' => Taille::class,
@@ -177,12 +180,14 @@ class AnimalFormType extends AbstractType
 //
 //            ]);
 
+
+        // Ajouter 2 écouteurs d'événement pour le formulaire
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }
 
     protected function addElements(FormInterface $form, EspeceAnimal $especeAnimal = null) {
-        // 4. Add the province element
+        // 4. Ajouter l'élément province
         $form->add('especes', EntityType::class, array(
             'mapped' => false,
             'required' => true,
@@ -191,10 +196,12 @@ class AnimalFormType extends AbstractType
             'class' => EspeceAnimal::class
         ));
 
+
+        // la race vides, sauf s'il y a une espèce sélectionnée (Edit View)
         $races = array();
-
+        // S'il y a une espèce stockée dans l'entité Animal, chargez les races de celle-ci
         if ($especeAnimal) {
-
+        // (Fetch) Récupère les races de l'espèce s'il y a une espèce sélectionnée
             $repoRaces = $this->em->getRepository(Race::class);
             $races = $repoRaces->createQueryBuilder("r")
                 ->where("r.especes = :id")
@@ -203,7 +210,7 @@ class AnimalFormType extends AbstractType
                 ->getResult();
         }
 
-        // Add the Neighborhoods field with the properly data
+        // Ajoute le champ race avec propérité data
         $form->add('races', EntityType::class, [
             'required' => true,
             'placeholder' => "Veuillez d'abord choisir une éspèce ...",
