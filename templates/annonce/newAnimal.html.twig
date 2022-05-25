@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Fiche animal {% endblock %}
+{% block title %} New animal {% endblock %}
 
 {% block body %}
-    <h1>New Animal</h1>
+    <h1>Créer un animal</h1>
 
     {{ include('animal/_form.html.twig', {'button_label': 'Save'}) }}
 
-    <a href="{{ path('app_animal_index') }}">back to list</a>
+    <a href="{{ path('main_home') }}">back to list</a>
 
 {#    {{ include('animal/_delete_form.html.twig') }}#}
 {% endblock %}

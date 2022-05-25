@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -90,6 +92,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $photo;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Declaration::class, mappedBy="users")
+     */
+    private $declarations;
+
+    public function __construct()
+    {
+        $this->declarations = new ArrayCollection();
+    }
+    public function __toString()
+    {
+        return $this->getNom();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -235,6 +250,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Declaration>
+     */
+    public function getDeclarations(): Collection
+    {
+        return $this->declarations;
+    }
+
+    public function addDeclaration(Declaration $declaration): self
+    {
+        if (!$this->declarations->contains($declaration)) {
+            $this->declarations[] = $declaration;
+            $declaration->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeclaration(Declaration $declaration): self
+    {
+        if ($this->declarations->removeElement($declaration)) {
+            // set the owning side to null (unless already changed)
+            if ($declaration->getUsers() === $this) {
+                $declaration->setUsers(null);
+            }
+        }
 
         return $this;
     }

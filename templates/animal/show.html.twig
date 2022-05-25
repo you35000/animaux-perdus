@@ -41,11 +41,11 @@
             </tr>
             <tr>
                 <th>Silhouette</th>
-                <td>{{ animal.silhouette }}</td>
+                <td>{{ animal.silhouettes }}</td>
             </tr>
             <tr>
                 <th>Taille</th>
-                <td>{{ animal.taille }}</td>
+                <td>{{ animal.tailles }}</td>
             </tr>
             <tr>
                 <th>Poils</th>
@@ -65,12 +65,12 @@
             </tr>
             <tr>
                 <th>Croisement</th>
-                <td>{{ animal.croisement }}</td>
+                <td>{{ animal.croisements }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_animal_index') }}">back to list</a>
+    <a href="{{ path('main_home') }}">back to list</a>
 
     <a href="{{ path('app_animal_edit', {'id': animal.id}) }}">edit</a>
 

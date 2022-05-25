@@ -20,7 +20,7 @@ class Declaration
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateHeureDispar;
+    private $dateHeureD;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -28,41 +28,45 @@ class Declaration
     private $infoSupp;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="declarations")
+     ** @ORM\JoinColumn(nullable=false)
      */
     private $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Secteur::class)
+     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="declarations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $etats;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Secteur::class, inversedBy="declarations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $secteurs;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Animal::class)
+     * @ORM\ManyToOne(targetEntity=Animal::class, inversedBy="declarations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $animaux;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Etat::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $etats;
+
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDateHeureDispar(): ?\DateTimeInterface
+    public function getDateHeureD(): ?\DateTimeInterface
     {
-        return $this->dateHeureDispar;
+        return $this->dateHeureD;
     }
 
-    public function setDateHeureDispar(\DateTimeInterface $dateHeureDispar): self
+    public function setDateHeureD(\DateTimeInterface $dateHeureD): self
     {
-        $this->dateHeureDispar = $dateHeureDispar;
+        $this->dateHeureD = $dateHeureD;
 
         return $this;
     }
@@ -91,6 +95,18 @@ class Declaration
         return $this;
     }
 
+    public function getEtats(): ?Etat
+    {
+        return $this->etats;
+    }
+
+    public function setEtats(?Etat $etats): self
+    {
+        $this->etats = $etats;
+
+        return $this;
+    }
+
     public function getSecteurs(): ?Secteur
     {
         return $this->secteurs;
@@ -115,15 +131,5 @@ class Declaration
         return $this;
     }
 
-    public function getEtats(): ?Etat
-    {
-        return $this->etats;
-    }
 
-    public function setEtats(?Etat $etats): self
-    {
-        $this->etats = $etats;
-
-        return $this;
-    }
 }

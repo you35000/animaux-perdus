@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SecteurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,6 +45,19 @@ class Secteur
      */
     private $communes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Declaration::class, mappedBy="secteurs")
+     */
+    private $declarations;
+
+    public function __construct()
+    {
+        $this->declarations = new ArrayCollection();
+    }
+    public function __toString()
+    {
+        return $this->getNom();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +119,36 @@ class Secteur
     public function setCommunes(?Commune $communes): self
     {
         $this->communes = $communes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Declaration>
+     */
+    public function getDeclarations(): Collection
+    {
+        return $this->declarations;
+    }
+
+    public function addDeclaration(Declaration $declaration): self
+    {
+        if (!$this->declarations->contains($declaration)) {
+            $this->declarations[] = $declaration;
+            $declaration->setSecteurs($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeclaration(Declaration $declaration): self
+    {
+        if ($this->declarations->removeElement($declaration)) {
+            // set the owning side to null (unless already changed)
+            if ($declaration->getSecteurs() === $this) {
+                $declaration->setSecteurs(null);
+            }
+        }
 
         return $this;
     }

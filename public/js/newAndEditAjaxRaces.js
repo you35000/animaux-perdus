@@ -3,7 +3,7 @@ let getCurrentEspeces = document.querySelector('#animal_form_especes');
 let selectList = document.querySelector("#animal_form_races");
 
 // l'url permettant d'accèder aux données via la base de données
-let url = "/animal/ajax/races";
+let url = "/annonce/ajax/races";
 
 getCurrentEspeces.addEventListener('change', (e) => {
     // e: l'event

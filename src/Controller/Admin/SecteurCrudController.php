@@ -2,16 +2,13 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Poil;
+use App\Entity\Secteur;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class PoilCrudController extends AbstractCrudController
+class SecteurCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Poil::class;
+        return Secteur::class;
     }
-
-
-
 }

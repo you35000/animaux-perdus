@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
         $this->addCouleur();
         $this->addRace();
         $this->addAnimal();
-//        $this->addDeclaration();
+        $this->addDeclaration();
     }
 
     public function addUser()
@@ -349,7 +349,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
         $commune = $this->manager->getRepository(Commune::class)->findAll();
-        $secteurs = ['Gare sud','Gare Nord','Centre','Est','Ouest','Blose','Republique','St Anne','Université','LeMarché'];
+        $secteurs = ['Secteur Nord','Secteur Sud','Centre','Secteur Est','Secteur Ouest'];
         for ($i = 0; $i < 20; $i++) {
 
             $secteur= new Secteur();
@@ -408,26 +408,27 @@ class AppFixtures extends Fixture
         $this->manager->flush();
     }
 
-//    public function addDeclaration()
-//    {
-//        $faker = Factory::create('fr_FR');
-//        $etats = $this->manager->getRepository(Etat::class)->findAll();
-//        $users = $this->manager->getRepository(User::class)->findAll();
-//        $secteurs = $this->manager->getRepository(Secteur::class)->findAll();
-//
-//
-//        for ($i = 0; $i < 50; $i++) {
-//
-//            $dateHeure = $faker->dateTimeThisYear();
-//            $declaration = new Departement();
-//            $declaration->setSecteurs($this->faker->randomElement($secteurs))
-//            ->setDateHeureDipar(date_add($dateHeure, date_interval_create_from_date_string('9 months')))
-//                ->setUsers($faker->randomElement($this->manager->getRepository(User::class)->findAll()))
-//                ->setEtats($faker->randomElement($etats));
-//
-//            $this->manager->persist($declaration);
-//        }
-//
-//        $this->manager->flush();
-//    }
+    public function addDeclaration()
+    {
+        $faker = Factory::create('fr_FR');
+        $etats = $this->manager->getRepository(Etat::class)->findAll();
+        $animaux = $this->manager->getRepository(Animal::class)->findAll();
+        $secteurs = $this->manager->getRepository(Secteur::class)->findAll();
+        $users = $this->manager->getRepository(User::class)->findAll();
+
+//        (date_add($dateHeure, date_interval_create_from_date_string('9 months')))
+        for ($i = 0; $i < 20; $i++) {
+
+            $declaration = new Declaration();
+            $declaration->setDateHeureD($this->faker->dateTimeThisYear())
+                ->setInfoSupp($this->faker->paragraph)
+                ->setUsers($faker->randomElement($users))
+                ->setEtats($faker->randomElement($etats))
+                ->setAnimaux($faker->randomElement($animaux))
+                ->setSecteurs($faker->randomElement($secteurs));
+            $this->manager->persist($declaration);
+        }
+
+        $this->manager->flush();
+    }
 }
