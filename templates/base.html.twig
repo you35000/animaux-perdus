@@ -41,8 +41,8 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid px-5">
                     <a class="navbar-brand" href="{{ path('main_home') }}">
-                        <img class="logo" src="{{ asset('img/logo.jpg') }}" width="50" alt="logo" color="black">
-                        Bienvenue</a>
+                        <img class="logo" src="{{ asset('img/logo.jpg') }}" width="50" alt="logo" >
+                        <small>Animaux Peruds</small></a>
                     {% if app.user %}
                         <span class="p-2 badge bg-success">{{ app.user.pseudo }}   Connecté</span>
                         <li class="nav-item">
@@ -67,10 +67,7 @@
                                     <a href="{{ path('admin_dashboard') }}"
                                        class="nav-link {% if r == 'dashboard' %}active{% endif %}">Paramétre</a>
                                 </li>
-                                {#                                    <li class="nav-item">#}
-                                {#                                        <a href="{{ path('#') }}"#}
-                                {#                                           class="nav-link {% if r == 'campus' %}active{% endif %}">Campus</a>#}
-                                {#                                    </li>#}
+
                             {% endif %}
 
                             {% if is_granted('ROLE_USER') %}
@@ -79,21 +76,23 @@
                                     <a href="{{ path('main_home') }}"
                                        class="nav-link {% if r == 'main_home' %}active{% endif %}">Accueil</a>
                                 </li>
-{#                                <li class="nav-item">#}
-{#                                    <a href="{{ path('user_edit') }}"#}
-{#                                       class="nav-link {% if r == 'user_show' %}active{% endif %}">Mon#}
-{#                                        profil</a>#}
-{#                                </li>#}
+
                                 <li class="nav-item ms-5">
                                     <a href="{{ path('app_logout') }}"
-                                       class="btn btn-outline-danger">Log out</a>
+                                       class="btn btn-outline-danger">Se déconnecter</a>
                                 </li>
-                            {% else %}
+                            {% else%}
                                 <li class="nav-item">
                                     <a href="{{ path('app_login') }}"
-                                       class="btn btn-primary{% if r == 'app_login' %}active{% endif %}">Log in</a>
+                                       class="nav-link{% if r == 'app_login' %}active{% endif %}">Se connecter</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{ path('user_new') }}"
+                                       class="nav-link {% if r == 'user_new' %}active{% endif %}">S'inscrire</a>
                                 </li>
                             {% endif %}
+
 
                         </ul>
                     </div>

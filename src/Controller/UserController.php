@@ -18,26 +18,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/new", name="user_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, UserRepository $userRepository): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->add($user);
-
-            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
+//    /**
+//     * @Route("/new", name="user_new", methods={"GET", "POST"})
+//     */
+//    public function new(Request $request, UserRepository $userRepository): Response
+//    {
+//        $user = new User();
+//        $form = $this->createForm(UserFormType::class, $user);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $userRepository->add($user);
+//
+//            return $this->redirectToRoute('user_new', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->renderForm('user/new.html.twig', [
+//            'user' => $user,
+//            'form' => $form,
+//        ]);
+//    }
 
     /**
      * @IsGranted("ROLE_USER")
