@@ -33,6 +33,6 @@ class SecurityController extends AbstractController
     public function logout(Request $request): Response
     {
         $request->getSession()->invalidate();
-        return $this->redirectToRoute('app_declaration');
+        return $this->redirectToRoute('main_home');
     }
 }

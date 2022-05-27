@@ -5,25 +5,18 @@
 {% block body %}
     <h1>Declaration index</h1>
 
-    {#    <table class="table">#}
-    {#        <thead>#}
-    {#        <tr>#}
-    {#            <th>Id</th>#}
-    {#            <th>DateHeureD</th>#}
-    {#            <th>InfoSupp</th>#}
-    {#            <th>actions</th>#}
-    {#        </tr>#}
-    {#        </thead>#}
-    {#        <tbody>#}
-    {% for declaration in declarations %}
+
         <div class="container">
             <div class="row">
+                  {% for declaration in declarations %}
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="{{ asset('img/logo.jpg') }}" class="img-fluid rounded-start" alt="...">
+
+                             <div class="card mb-3" style="max-width: 540px;">
+                                    <div class="row g-0">
+                                     <div class="col-md-4">
+                                    <img src="{{ asset('img/logo.jpg') }}" class="img-fluid rounded-start" alt="...">
                             </div>
+
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ declaration.animaux.nom }}</h5>
@@ -33,8 +26,8 @@
                                     <p class="card-text"><big class="text-muted">Nom  : {{ declaration.animaux.nom  }}</big></p>
                                     <p class="card-text"><big class="text-muted">Sexe : {{ declaration.animaux.sexe  }}</big></p>
                                     <p class="card-text"><big class="text-muted">Race : {{ declaration.animaux.races  }}</big></p>
-                                    {#                                                        <a href="{{ path('app_declaration_show', {'id': declaration.id}) }}" class="btn btn-primary">Show</a>#}
-                                    {#                                                        <a href="{{ path('app_declaration_edit', {'id': declaration.id}) }}" class="btn btn-primary">Edit</a>#}
+{#                                    <a href="{{ path('app_declaration_show', {'id': declaration.id}) }}" class="btn btn-primary">Show</a>#}
+{#                                    <a href="{{ path('app_declaration_edit', {'id': declaration.id}) }}" class="btn btn-primary">Edit</a>#}
                                 </div>
                             </div>
                         </div>
@@ -42,15 +35,7 @@
                 </div>
             </div>
         </div>
-        {#            <tr>#}
-        {#                <td>{{ declaration.id }}</td>#}
-        {#                <td>{{ declaration.dateHeureD ? declaration.dateHeureD|date('Y-m-d H:i:s') : '' }}</td>#}
-        {#                <td>{{ declaration.infoSupp }}</td>#}
-        {#                <td>#}
-        {#                    <a href="{{ path('app_declaration_show', {'id': declaration.id}) }}">show</a>#}
-        {#                    <a href="{{ path('app_declaration_edit', {'id': declaration.id}) }}">edit</a>#}
-        {#                </td>#}
-        {#            </tr>#}
+
     {% else %}
         {#            <tr>#}
         {#                <td colspan="4">no records found</td>#}
@@ -59,5 +44,5 @@
     {#        </tbody>#}
     {#    </table>#}
 
-    <a href="{{ path('app_annonce_step_one') }}">Create new</a>
+    <a href="{{ path('_step_one') }}">Create new</a>
 {% endblock %}

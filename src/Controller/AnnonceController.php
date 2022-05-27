@@ -11,6 +11,7 @@ use App\Repository\AnimalRepository;
 use App\Repository\DeclarationRepository;
 use App\Repository\EspeceAnimalRepository;
 use App\Repository\RaceRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,20 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/annonce", name="app_annonce")
+ * @Route("/profil")
  */
 
 class AnnonceController extends AbstractController
 
 {
 
-//    /**
-//     * @Route("/", name="app_home")
-//     */
-//    public function main(): Response
-//    {
-//        return $this->render('main/accueil.html.twig');
-//    }
 
     /**
      * Renvoie une chaîne JSON avec les races de l'espèce animal avec l'identifiant fourni.
@@ -72,7 +66,8 @@ class AnnonceController extends AbstractController
 
 
     /**
-     * @Route("/declaration-etape2", name="_step_one", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
+     * @Route("/declaration-etape2", name="_step_tow", methods={"GET", "POST"})
      */
     public function newAnimal(Request $request, AnimalRepository $animalRepository): Response
     {
@@ -95,6 +90,7 @@ class AnnonceController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/ajax/races", name="_ajax_races", methods={"POST"})
      */
     public function ajaxGetRaces(
@@ -128,7 +124,8 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/declaration-etape1", name="_step_two", methods={"GET", "POST"})
+     * @IsGranted("ROLE_USER")
+     * @Route("/declaration-etape1", name="_step_one", methods={"GET", "POST"})
      */
     public function newDeclaration(Request $request, DeclarationRepository $declarationRepository): Response
     {
