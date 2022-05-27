@@ -360,7 +360,5 @@ class Animal
         return $this;
     }
 
-
-//    test
 }
 

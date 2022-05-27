@@ -77,10 +77,18 @@
                                        class="nav-link {% if r == 'main_home' %}active{% endif %}">Accueil</a>
                                 </li>
 
-                                <li class="nav-item ms-5">
+                                <li class="nav-item ">
                                     <a href="{{ path('app_logout') }}"
                                        class="nav-link">Se déconnecter</a>
                                 </li>
+                            <li class="p-3 badge bg-success"> {{ app.user.pseudo }}</li>
+{#                                <li class="nav-item ">#}
+{#                                <a href="{{ path('user_edit', {'id': user.id}) }}"#}
+{#                                   class="nav-link {% if r == 'user_edit' %}active{% endif %}">{{ app.user.id }}</a>#}
+{#                               </li>#}
+
+
+
                             {% else%}
                                 <li class="nav-item">
                                     <a href="{{ path('app_login') }}"
@@ -90,7 +98,7 @@
                                 <li class="nav-item">
                                     <a href="{{ path('user_new') }}"
                                        class="nav-link {% if r == 'user_new' %}active{% endif %}">S'inscrire</a>
-                                </li>
+
                             {% endif %}
 
 

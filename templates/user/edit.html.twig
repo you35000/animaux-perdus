@@ -13,11 +13,11 @@
                 <div class="row g-0">
                     <div class="col-md-3 p-3">
                         {% if user.photo %}
-                            {#                            <img src="{{ asset('uploads/user_img/' ~  user.photo) }}" class="img-fluid rounded-start"#}
-                            {#                                 alt="Photo profil de {{ user.pseudo }}">#}
+                            <img src="{{ asset('uploads/user_img/' ~  user.photo) }}" class="img-fluid rounded-start"
+                                 alt="Photo profil de {{ user.pseudo }}">
                         {% else %}
-                            {#                            <img src="{{ asset('img/default-profile.png') }}" class="img-fluid rounded-start"#}
-                            {#                                 alt="Photo profil de {{ user.pseudo }}">#}
+                            <img src="{{ asset('img/default-profile.png') }}" class="img-fluid rounded-start"
+                                 alt="Photo profil de {{ user.pseudo }}">
                         {% endif %}
                     </div>
                     <div class="col-md-9">
