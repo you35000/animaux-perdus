@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/profil")
+ * @Route("/internal")
  */
 
 class AnimalController extends AbstractController
@@ -39,7 +39,7 @@ class AnimalController extends AbstractController
 //
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}", name="app_animal_show", methods={"GET"},requirements={"id"="\d+"})
+     * @Route("/animal/{id}", name="app_animal_show", methods={"GET"},requirements={"id"="\d+"})
      */
     public function show(Animal $animal): Response
     {
@@ -50,7 +50,7 @@ class AnimalController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}/edit", name="app_animal_edit", methods={"GET", "POST"})
+     * @Route("/animal/{id}/edit", name="app_animal_edit", methods={"GET", "POST"})
      */
     public function edit(
         int $id,
@@ -78,7 +78,7 @@ class AnimalController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}", name="app_animal_form_type_delete", methods={"POST"})
+     * @Route("/animal/{id}", name="app_animal_form_type_delete", methods={"POST"})
      */
     public function delete(Request $request, Animal $animal, AnimalRepository $animalRepository): Response
     {

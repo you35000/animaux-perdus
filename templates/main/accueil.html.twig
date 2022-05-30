@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Declaration index{% endblock %}
+{% block title %}Annonces de perte{% endblock %}
 
 {% block body %}
 
@@ -27,8 +27,8 @@
                                     <p class="card-text"><big class="text-muted">Nom  : {{ declaration.animaux.nom  }}</big></p>
                                     <p class="card-text"><big class="text-muted">Sexe : {{ declaration.animaux.sexe  }}</big></p>
                                     <p class="card-text"><big class="text-muted">Race : {{ declaration.animaux.races  }}</big></p>
-{#                                    <a href="{{ path('app_declaration_show', {'id': declaration.id}) }}" class="btn btn-primary">Show</a>#}
-{#                                    <a href="{{ path('app_declaration_edit', {'id': declaration.id}) }}" class="btn btn-primary">Edit</a>#}
+                                    <a href="{{ path('app_declaration_show', {id: declaration.id}) }}" class="btn btn-primary">Show</a>
+                                    <a href="{{ path('app_declaration_edit', {id: declaration.id}) }}" class="btn btn-primary">Edit</a>
                                 </div>
                             </div>
                         </div>
@@ -45,5 +45,5 @@
     {#        </tbody>#}
     {#    </table>#}
 
-    <a href="{{ path('_step_one') }}">Create new</a>
+{#    <a href="{{ path('app_annonce_step_one') }}">Create new</a>#}
 {% endblock %}

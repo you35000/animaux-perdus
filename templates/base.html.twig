@@ -26,8 +26,6 @@
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {% endblock%}
 
-
-
 </head>
 <body>
 
@@ -46,11 +44,11 @@
                     {% if app.user %}
 
                         <li class="nav-item">
-                            <a href="{{ path('_step_one') }}" class="btn btn-outline-danger"> <i class="fa fa-plus"></i>
+                            <a href="{{ path('app_annonce_step_one') }}" class="btn btn-outline-danger"> <i class="fa fa-plus"></i>
                                 Créer une déclaration</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ path('_step_one') }}" class="btn btn-outline-warning"><i class="fa fa-plus"></i>
+                            <a href="{{ path('app_annonce_step_one') }}" class="btn btn-outline-warning"><i class="fa fa-plus"></i>
                                 Créer un signalement </a>
                         </li>
                     {% endif %}
@@ -81,12 +79,12 @@
                                     <a href="{{ path('app_logout') }}"
                                        class="nav-link">Se déconnecter</a>
                                 </li>
-                            <li class="p-3 badge bg-success"> {{ app.user.pseudo }}</li>
-{#                                <li class="nav-item ">#}
-{#                                <a href="{{ path('user_edit', {'id': user.id}) }}"#}
-{#                                   class="nav-link {% if r == 'user_edit' %}active{% endif %}">{{ app.user.id }}</a>#}
-{#                               </li>#}
 
+                            <li class="p-3 badge bg-success"> {{ app.user.pseudo }}</li>
+                            <li class="nav-item ">
+                                <a href="{{ path('user_edit', {id: app.user.id}) }}"
+                                   class="nav-link {% if r == 'user_edit' %}active{% endif %}">Mon profil</a>
+                            </li>
 
 
                             {% else%}

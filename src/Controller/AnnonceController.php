@@ -19,19 +19,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/profil")
+ * @Route("/internal", name = "app_annonce")
  */
 
 class AnnonceController extends AbstractController
 
 {
-
-
     /**
      * Renvoie une chaîne JSON avec les races de l'espèce animal avec l'identifiant fourni.
      *
      * @param Request $request
      * @return JsonResponse
+     *
+     *
      */
     public function listRacesAnimalAction(Request $request)
     {
@@ -56,18 +56,12 @@ class AnnonceController extends AbstractController
                 "nom" => $race->getNom()
             );
         }
-
         // Renvoie un tableau avec la structure des races de l'identifiant de l'espèce animal fourni
         return new JsonResponse($responseArray);
-
-
     }
-
-
-
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/declaration-etape2", name="_step_tow", methods={"GET", "POST"})
+     * @Route("/declaration-etape1", name="_step_one", methods={"GET", "POST"})
      */
     public function newAnimal(Request $request, AnimalRepository $animalRepository): Response
     {
@@ -125,7 +119,7 @@ class AnnonceController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/declaration-etape1", name="_step_one", methods={"GET", "POST"})
+     * @Route("/declaration-etape2", name="_step_tow", methods={"GET", "POST"})
      */
     public function newDeclaration(Request $request, DeclarationRepository $declarationRepository): Response
     {

@@ -6,42 +6,34 @@ use App\Entity\User;
 
 use App\Form\UserFormType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * @Route("/profil")
+ * @Route("/internal")
  */
 
 class UserController extends AbstractController
 {
-//    /**
-//     * @Route("/new", name="user_new", methods={"GET", "POST"})
-//     */
-//    public function new(Request $request, UserRepository $userRepository): Response
+//    private EntityManagerInterface $entityManager;
+//
+//    public function __construct(
+//        EntityManagerInterface $entityManager
+//    )
 //    {
-//        $user = new User();
-//        $form = $this->createForm(UserFormType::class, $user);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $userRepository->add($user);
-//
-//            return $this->redirectToRoute('user_new', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->renderForm('user/new.html.twig', [
-//            'user' => $user,
-//            'form' => $form,
-//        ]);
+//        $this->entityManager = $entityManager;
 //    }
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/user/{id}", name="user_show", methods={"GET"})
      */
     public function show(User $user): Response
     {
@@ -50,36 +42,67 @@ class UserController extends AbstractController
         ]);
     }
 
+//* @Route("/user/{id}/edit", name="user_edit", methods={"GET", "POST"})
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}/edit", name="user_edit", methods={"GET", "POST"})
+     * @Route("/user/{id}/edit", name="user_edit")
      */
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(EntityManagerInterface $entityManager, Request $request,  SluggerInterface $slugger, UserPasswordHasherInterface $hasher): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(UserFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->add($user);
-            return $this->redirectToRoute('app_utilisateurs', [], Response::HTTP_SEE_OTHER);
-        }
 
-        return $this->renderForm('user/edit.html.twig', [
+            $password = $form->get('password')->getData();
+            if ($password){
+                $hashedPassword = $hasher->hashPassword($user, $password);
+                $user->setPassword($hashedPassword);
+            }
+            $picture = $form->get('photo')->getData();
+            if ($picture) {
+                $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $picture->guessExtension();
+
+                try {
+                    $picture->move(
+                        $this->getParameter('uploads_user_pictures'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    dd('oups : prob\'s happened');
+                }
+
+                $user->setPhoto($newFilename);
+            }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->redirectToRoute('main_home');
+
+//            $userRepository->add($user);
+//            return $this->redirectToRoute('app_utilisateurs', [], Response::HTTP_SEE_OTHER);
+        }
+//
+        return $this->render('user/edit.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}", name="user_delete", methods={"POST"})
+     * @Route("/user/{id}", name="user_delete", methods={"POST"})
      */
     public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $userRepository->remove($user);
         }
-//        user_index
-        return $this->redirectToRoute('app_utilisateurs', [], Response::HTTP_SEE_OTHER);
+
+        return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
     }
 }

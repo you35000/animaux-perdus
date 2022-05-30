@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/profil")
+ * @Route("/internal")
  */
 
 class DeclarationController extends AbstractController
@@ -31,7 +31,7 @@ class DeclarationController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}", name="_show", methods={"GET"},requirements={"id"="\d+"})
+     * @Route("/declaration/{id}", name="app_declaration_show", methods={"GET"},requirements={"id"="\d+"})
      */
     public function show(Declaration $declaration): Response
     {
@@ -42,7 +42,7 @@ class DeclarationController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}/edit", name="_edit", methods={"GET", "POST"})
+     * @Route("/declaration/{id}/edit", name="app_declaration_edit", methods={"GET", "POST"})
      */
     public function edit(int $id, Request $request, DeclarationRepository $declarationRepository): Response
     {
@@ -59,7 +59,7 @@ class DeclarationController extends AbstractController
             $this->entityManager->persist($declaration);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('app_declaration_show', ['id' => $id], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('main_home', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('declaration/edit.html.twig', [
@@ -70,7 +70,7 @@ class DeclarationController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/{id}", name="_delete", methods={"POST"})
+     * @Route("/declaration/{id}", name="app_declaration_delete", methods={"POST"})
      */
     public function delete(Request $request, Declaration $declaration, DeclarationRepository $declarationRepository): Response
     {
@@ -78,6 +78,6 @@ class DeclarationController extends AbstractController
             $declarationRepository->remove($declaration, true);
         }
 
-        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
     }
 }
