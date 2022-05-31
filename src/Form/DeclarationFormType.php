@@ -23,7 +23,7 @@ class DeclarationFormType extends AbstractType
                 'label' => 'Date et heure de la disparition',
                 'date_widget' => 'single_text',
                 'time_widget' => 'single_text',
-                'data' => (new \DateTime())->modify('+1 day'),
+//                'data' => (new \DateTime())->modify('+1 day'),
             ])
             ->add('infoSupp', TextareaType::class, [
                 'label' => 'infos supplémentaires',

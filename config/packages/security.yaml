@@ -27,6 +27,9 @@ security:
                 secret: '%kernel.secret%' # required
                 lifetime: 604800 # 1 week in seconds
 
+            # On utilise un checker perso pour mettre en place un comportement plus spécifique
+            user_checker: App\Security\UserChecker
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

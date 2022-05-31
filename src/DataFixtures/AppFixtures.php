@@ -14,6 +14,7 @@ use App\Entity\Etat;
 use App\Entity\Poil;
 use App\Entity\Race;
 use App\Entity\Secteur;
+use App\Entity\Signalement;
 use App\Entity\Silhouette;
 use App\Entity\Taille;
 use App\Entity\TypeCollier;
@@ -55,6 +56,8 @@ class AppFixtures extends Fixture
         $this->addRace();
         $this->addAnimal();
         $this->addDeclaration();
+        $this->addSignalement();
+//        $this->addCommentaire();
     }
 
     public function addUser()
@@ -66,7 +69,8 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
             ->setEmail('jean.dupont@gmail.com')
             ->setTelephone($this->faker->mobileNumber)
-            ->setPassword($this->hasher->hashPassword($user, '123'));
+            ->setPassword($this->hasher->hashPassword($user, '123'))
+            ->setIsActive(1);
 
         $this->manager->persist($user);
 
@@ -81,6 +85,7 @@ class AppFixtures extends Fixture
                 ->setNom($nom)
                 ->setPseudo($pseudo)
                 ->setRoles(['ROLE_USER'])
+                ->setIsActive(1)
                 ->setEmail($this->faker->freeEmail)
                 ->setTelephone($this->faker->mobileNumber)
                 ->setPassword($this->hasher->hashPassword($user, '123456'));
@@ -430,5 +435,19 @@ class AppFixtures extends Fixture
         }
 
         $this->manager->flush();
+    }
+
+    public  function addSignalement(){
+
+        for ($i = 0; $i < 20; $i++) {
+
+            $signalement = new Signalement();
+            $signalement->setDateHeure($this->faker->dateTimeThisYear())
+                ->setMessage($this->faker->paragraph);
+
+            $this->manager->persist($signalement);
+        }
+            $this->manager->flush();
+
     }
 }

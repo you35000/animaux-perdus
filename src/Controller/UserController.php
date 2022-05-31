@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 
+use App\Form\PasswordChangeFormType;
+use App\Form\ProfilFormType;
 use App\Form\UserFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,15 +24,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserController extends AbstractController
 {
-//    private EntityManagerInterface $entityManager;
-//
-//    public function __construct(
-//        EntityManagerInterface $entityManager
-//    )
-//    {
-//        $this->entityManager = $entityManager;
-//    }
-
     /**
      * @IsGranted("ROLE_USER")
      * @Route("/user/{id}", name="user_show", methods={"GET"})
@@ -47,19 +40,21 @@ class UserController extends AbstractController
      * @IsGranted("ROLE_USER")
      * @Route("/user/{id}/edit", name="user_edit")
      */
-    public function edit(EntityManagerInterface $entityManager, Request $request,  SluggerInterface $slugger, UserPasswordHasherInterface $hasher): Response
+//    public function edit(EntityManagerInterface $entityManager, Request $request,  SluggerInterface $slugger, UserPasswordHasherInterface $hasher): Response
+
+    public function edit(EntityManagerInterface $entityManager, Request $request,  SluggerInterface $slugger): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(UserFormType::class, $user);
+        $form = $this->createForm(ProfilFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $password = $form->get('password')->getData();
-            if ($password){
-                $hashedPassword = $hasher->hashPassword($user, $password);
-                $user->setPassword($hashedPassword);
-            }
+//            $password = $form->get('password')->getData();
+//            if ($password){
+//                $hashedPassword = $hasher->hashPassword($user, $password);
+//                $user->setPassword($hashedPassword);
+//            }
             $picture = $form->get('photo')->getData();
             if ($picture) {
                 $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
@@ -104,5 +99,34 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/user/{id}/password-change", name="password_change")
+     */
+    public function passwordChange(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $hasher): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(PasswordChangeFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $password = $form->get('password')->getData();
+            if ($password){
+                $hashedPassword = $hasher->hashPassword($user, $password);
+                $user->setPassword($hashedPassword);
+            }
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->redirectToRoute('main_home');
+        }
+
+        return $this->render('user/passwordChange.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
     }
 }

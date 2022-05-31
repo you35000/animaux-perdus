@@ -16,7 +16,7 @@
                             <img src="{{ asset('uploads/user_img/' ~  user.photo) }}" class="img-fluid rounded-start"
                                  alt="Photo profil de {{ user.pseudo }}">
                         {% else %}
-                            <img src="{{ asset('img/default-profile.png') }}" class="img-fluid rounded-start"
+                            <img src="{{ asset('img/defaut-profile.png') }}" class="img-fluid rounded-start"
                                  alt="Photo profil de {{ user.pseudo }}">
                         {% endif %}
                     </div>
@@ -30,14 +30,13 @@
                                         <li class="list-group-item">{{ form_row(form.pseudo) }}</li>
                                         <li class="list-group-item">{{ form_row(form.prenom) }}</li>
                                         <li class="list-group-item">{{ form_row(form.nom) }}</li>
-                                        <li class="list-group-item">{{ form_row(form.photo) }}</li>
                                     </ul>
                                 </div>
                                 <div class="col-6">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item">{{ form_row(form.telephone) }}</li>
                                         <li class="list-group-item">{{ form_row(form.email) }}</li>
-                                        <li class="list-group-item">{{ form_row(form.password) }}</li>
+                                        <li class="list-group-item">{{ form_row(form.photo) }}</li>
                                     </ul>
                                     <div class="mt-3 text-center">
                                         <button class="btn btn-success btn-lg me-5">Enregistrer</button>

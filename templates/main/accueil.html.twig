@@ -4,46 +4,60 @@
 
 {% block body %}
 
-    <p><small><center>Vous avez perdu votre animal? fait vite une déclatation. si vous avez trouvé,
-                aperçu un animal ? fait un signalement </center></small></p>
+    <p><small>
+            <center>Vous avez perdu votre animal? fait vite une déclatation. si vous avez trouvé,
+                aperçu un animal ? fait un signalement
+            </center>
+        </small></p>
 
-        <div class="container">
-            <div class="row">
-                  {% for declaration in declarations %}
-                <div class="col-12 col-md-6 col-lg-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                Commentaires
+            </div>
 
-                             <div class="card mb-3" style="max-width: 540px;">
-                                    <div class="row g-0">
-                                     <div class="col-md-4">
-                                    <img src="{{ asset('img/logo.jpg') }}" class="img-fluid rounded-start" alt="...">
-                            </div>
+            <div class="col-8">
+                {% for declaration in declarations %}
+                    <div class="d-flex flex-row">
+                        <div class="col-4">
+                            <div class="card mb-3" style="max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{{ asset('img/logo.jpg') }}" class="img-fluid rounded-start"
+                                             alt="...">
+                                    </div>
 
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ declaration.animaux.nom }}</h5>
-                                    <p class="card-text"><big class="text-muted">{{ declaration.animaux.races.especes }} perdu le
-                                            {{ declaration.dateHeureD ? declaration.dateHeureD|date('Y-m-d') : '' }}
-                                            A {{ declaration.dateHeureD ? declaration.dateHeureD|date('H:i') : '' }}</big></p>
-                                    <p class="card-text"><big class="text-muted">Nom  : {{ declaration.animaux.nom  }}</big></p>
-                                    <p class="card-text"><big class="text-muted">Sexe : {{ declaration.animaux.sexe  }}</big></p>
-                                    <p class="card-text"><big class="text-muted">Race : {{ declaration.animaux.races  }}</big></p>
-                                    <a href="{{ path('app_declaration_show', {id: declaration.id}) }}" class="btn btn-primary">Show</a>
-                                    <a href="{{ path('app_declaration_edit', {id: declaration.id}) }}" class="btn btn-primary">Edit</a>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ declaration.animaux.nom }}</h5>
+                                            <p class="card-text"><big
+                                                        class="text-muted">{{ declaration.animaux.races.especes }}
+                                                    perdu le
+                                                    {{ declaration.dateHeureD ? declaration.dateHeureD|date('Y-m-d') : '' }}
+                                                    A {{ declaration.dateHeureD ? declaration.dateHeureD|date('H:i') : '' }}</big>
+                                            </p>
+                                            <p class="card-text"><big class="text-muted">Nom
+                                                    : {{ declaration.animaux.nom }}</big>
+                                            </p>
+                                            <p class="card-text"><big class="text-muted">Sexe
+                                                    : {{ declaration.animaux.sexe }}</big>
+                                            </p>
+                                            <p class="card-text"><big class="text-muted">Race
+                                                    : {{ declaration.animaux.races }}</big></p>
+                                            <a href="{{ path('app_declaration_show', {id: declaration.id}) }}"
+                                               class="btn btn-primary">Show</a>
+                                            <a href="{{ path('app_declaration_edit', {id: declaration.id}) }}"
+                                               class="btn btn-primary">Edit</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                {% endfor %}
             </div>
         </div>
+    </div>
 
-    {% else %}
-        {#            <tr>#}
-        {#                <td colspan="4">no records found</td>#}
-        {#            </tr>#}
-    {% endfor %}
-    {#        </tbody>#}
-    {#    </table>#}
-
-{#    <a href="{{ path('app_annonce_step_one') }}">Create new</a>#}
 {% endblock %}

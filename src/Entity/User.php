@@ -97,6 +97,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $declarations;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
+
     public function __construct()
     {
         $this->declarations = new ArrayCollection();
@@ -280,6 +285,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $declaration->setUsers(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

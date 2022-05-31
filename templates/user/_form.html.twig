@@ -2,3 +2,8 @@
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+{# {% if not app.request.attributes.get('_route') == 'user_edit' %}#}
+{#     {{ form_row(form.passowrd) }}#}
+
+{# {% endif %}#}

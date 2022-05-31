@@ -47,11 +47,13 @@
                             <a href="{{ path('app_annonce_step_one') }}" class="btn btn-outline-danger"> <i class="fa fa-plus"></i>
                                 Créer une déclaration</a>
                         </li>
+                    {% endif %}
+
                         <li class="nav-item">
-                            <a href="{{ path('app_annonce_step_one') }}" class="btn btn-outline-warning"><i class="fa fa-plus"></i>
+                            <a href="{{ path('app_signalement_new') }}" class="btn btn-outline-warning"><i class="fa fa-plus"></i>
                                 Créer un signalement </a>
                         </li>
-                    {% endif %}
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent"
                             aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -80,11 +82,26 @@
                                        class="nav-link">Se déconnecter</a>
                                 </li>
 
-                            <li class="p-3 badge bg-success"> {{ app.user.pseudo }}</li>
-                            <li class="nav-item ">
-                                <a href="{{ path('user_edit', {id: app.user.id}) }}"
-                                   class="nav-link {% if r == 'user_edit' %}active{% endif %}">Mon profil</a>
+                            <li >
+
+                            <div class="dropdown">
+                                <button class="p-3 badge bg-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ app.user.pseudo }}
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="{{ path('user_edit', {id: app.user.id}) }}"
+                                           class="nav-link {% if r == 'user_edit' %}active{% endif %}">Mon profil</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('password_change', {id: app.user.id}) }}"
+                                           class="nav-link {% if r == 'password_change' %}active{% endif %}">mot de passe</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </div>
                             </li>
+
+{#                            <li class="nav-item ">#}
+{#                                <a href="{{ path('user_edit', {id: app.user.id}) }}"#}
+{#                                   class="nav-link {% if r == 'user_edit' %}active{% endif %}">Mon profil</a>#}
+{#                            </li>#}
 
 
                             {% else%}
