@@ -3,6 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Declaration;
+use App\Entity\EspeceAnimal;
+use App\Entity\Secteur;
+use App\Entity\User;
+use App\Form\Model\SearchDeclaration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -21,17 +25,35 @@ class DeclarationRepository extends ServiceEntityRepository
         parent::__construct($registry, Declaration::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function add(Declaration $entity, bool $flush = true): void
-    {
-        $this->_em->persist($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
+    public function findDefault(){
+        $qb = $this->createQueryBuilder('q');
+        $qb->join("q.secteurs", "s");
+        $qb->join('q.animaux', "t");
+        $query = $qb->getQuery();
+        return $query->getResult();
     }
+
+    public function findByFiltre(Secteur $secteur)
+    {
+        $qb = $this->createQueryBuilder('q');
+        $qb->join("q.secteurs", "s");
+//        $qb->join('q.animaux', "t");
+
+        if ($secteur) {
+            $qb->setParameter('secteur', $secteur)
+                ->andWhere("q.secteurs = :secteur");
+        }
+
+//        if ($especeAnimal) {
+//            $qb->setParameter('animaux', $especeAnimal)
+//                ->andWhere("q.animaux = :animaux");
+//        }
+
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
 
     /**
      * @throws ORMException
@@ -44,6 +66,31 @@ class DeclarationRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+//    public function findAllNotHistorized($user)
+//    {
+//        return $this->createQueryBuilder('o')
+//            ->where('o.dateHeureD > :dateNow')
+//            ->setParameter('dateNow', new \DateTime())
+//            ->andWhere('o.secteurs = :secteur')
+//            ->setParameter('secteur', $user->getx())
+//            ->orderBy('o.dateHeureD', 'ASC')
+//            ->getQuery()->execute();
+//    }
+
+//    public function filters(SearchDeclaration $search, User $user)
+//    {
+//        $qb = $this->createQueryBuilder('o');
+//
+//        if ($search->getSecteur()) {
+//            $qb->andWhere('o.secteurs = :secteur')
+//                ->setParameter('secteur', $search->getSecteur());
+//        }
+//        $qb->orderBy('o.dateHeureD', 'ASC');
+//        $query = $qb->getQuery();
+//
+//        return $query->execute();
+//    }
 
     // /**
     //  * @return Declaration[] Returns an array of Declaration objects

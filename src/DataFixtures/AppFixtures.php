@@ -98,6 +98,9 @@ class AppFixtures extends Fixture
     public function addEtat()
     {
         $etat = new Etat();
+        $etat->setLibelle('crée');
+        $this->manager->persist($etat);
+
         $etat->setLibelle('Recherche en cours');
         $this->manager->persist($etat);
 

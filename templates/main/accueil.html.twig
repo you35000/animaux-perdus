@@ -10,6 +10,26 @@
             </center>
         </small></p>
 
+<section>
+    <div class="col-3 my-5 bg-dark text-light p-4">
+
+        <h3>Filter les declarations</h3>
+        {{ form_start(formSearch) }}
+        <div class="row">
+            <div class="col-9">
+                {{ form_row(formSearch.secteurs) }}
+{#                {{ form_row(formSearch.animaux) }}#}
+            </div>
+        </div>
+
+        <div class="col-2 align-self-center">
+            <button type="submit" class="btn btn-dark btn-lg">Rechercher</button>
+        </div>
+        {{ form_end(formSearch) }}
+        <br>
+
+
+</section>
     <div class="container">
         <div class="row">
             <div class="col-3 my-5 ">
@@ -63,14 +83,16 @@
                                                     {{ declaration.dateHeureD ? declaration.dateHeureD|date('Y-m-d') : '' }}
                                                     A {{ declaration.dateHeureD ? declaration.dateHeureD|date('H:i') : '' }}</big>
                                             </p>
-                                            <p class="card-text"><big class="text-muted">Nom
-                                                    : {{ declaration.animaux.nom }}</big>
+                                            <p class="card-text"><small class="text-muted">Nom
+                                                    : {{ declaration.animaux.nom }}</small>
                                             </p>
-                                            <p class="card-text"><big class="text-muted">Sexe
-                                                    : {{ declaration.animaux.sexe }}</big>
+                                            <p class="card-text"><small class="text-muted">Sexe
+                                                    : {{ declaration.animaux.sexe }}</small>
                                             </p>
-                                            <p class="card-text"><big class="text-muted">Race
-                                                    : {{ declaration.animaux.races }}</big></p>
+                                            <p class="card-text"><small class="text-muted">Race
+                                                    : {{ declaration.animaux.races }}</small></p>
+                                            <p class="card-text"><small class="text-muted">Etat
+                                                    : {{ declaration.etats.libelle }}</small></p>
                                             <a href="{{ path('app_declaration_show', {id: declaration.id}) }}"
                                                class="btn btn-primary">Show</a>
                                             <a href="{{ path('app_declaration_edit', {id: declaration.id}) }}"
