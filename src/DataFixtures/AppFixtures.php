@@ -443,7 +443,8 @@ class AppFixtures extends Fixture
 
             $signalement = new Signalement();
             $signalement->setDateHeure($this->faker->dateTimeThisYear())
-                ->setMessage($this->faker->paragraph);
+                ->setMessage($this->faker->paragraph)
+                ->setAuteur($this->faker->firstName);
 
             $this->manager->persist($signalement);
         }

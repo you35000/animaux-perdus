@@ -27,6 +27,11 @@ class Signalement
      */
     private $message;
 
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $auteur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Signalement
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getAuteur(): ?string
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(string $auteur): self
+    {
+        $this->auteur = $auteur;
 
         return $this;
     }

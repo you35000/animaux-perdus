@@ -22,9 +22,8 @@ class SignalementFormType extends AbstractType
             ])
             ->add('message', TextareaType::class, [
                 'label' => 'message',
-                'attr' => ['placeholder' => 'message'],
+//                'attr' => ['placeholder' => 'message'],
             ])
-
         ;
     }
 
