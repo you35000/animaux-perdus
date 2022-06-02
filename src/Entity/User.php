@@ -102,6 +102,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isConsentement;
+
     public function __construct()
     {
         $this->declarations = new ArrayCollection();
@@ -297,6 +302,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function isConsentement(): ?bool
+    {
+        return $this->isConsentement;
+    }
+
+    public function setIsConsentement(bool $isConsentement): self
+    {
+        $this->isConsentement = $isConsentement;
 
         return $this;
     }

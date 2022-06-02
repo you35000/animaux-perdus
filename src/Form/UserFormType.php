@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -14,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -90,6 +92,17 @@ class UserFormType extends AbstractType
 
                     ]
                 ])
+            ->add('isConsentement',CheckboxType::class,[
+
+                'constraints' => [
+//                    'trim' => true,
+                    new NotBlank(['message' => ' ',]),
+                    new IsTrue(['message' => 'Avez-vu lu notre politique de traitement de données ?'])
+                ],
+//                'mapped' => false, // pour ne pas lier le consentement à la base de données
+                'required' => true,
+                'label' => 'J\'accepte les conditions générales d\'utilisation #(CGU)# d\'Animaux-perdu.'
+            ])
 //            }
 
 //            $builder

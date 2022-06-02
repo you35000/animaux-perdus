@@ -70,7 +70,8 @@ class AppFixtures extends Fixture
             ->setEmail('jean.dupont@gmail.com')
             ->setTelephone($this->faker->mobileNumber)
             ->setPassword($this->hasher->hashPassword($user, '123'))
-            ->setIsActive(1);
+            ->setIsActive(1)
+            ->setIsConsentement(1);
 
         $this->manager->persist($user);
 
@@ -86,6 +87,7 @@ class AppFixtures extends Fixture
                 ->setPseudo($pseudo)
                 ->setRoles(['ROLE_USER'])
                 ->setIsActive(1)
+                ->setIsConsentement(1)
                 ->setEmail($this->faker->freeEmail)
                 ->setTelephone($this->faker->mobileNumber)
                 ->setPassword($this->hasher->hashPassword($user, '123456'));

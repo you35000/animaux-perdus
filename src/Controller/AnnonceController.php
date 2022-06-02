@@ -150,24 +150,22 @@ class AnnonceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newDeclaration = $form->getData();
-            $newDeclaration->setSecteur($repo->find($req->request->get('outing_form')['place']));
+            $newDeclaration->setSecteur($repo->find($req->request->get('declaration_form')['secteur']));
             $newDeclaration->setOrganizer($this->getUser());
 
             if ($req->request->get('creer')) {
                 $newDeclaration->setEtat($em->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']));
-                $this->addFlash('success', 'Votre sortie ' . $newDeclaration->getName() . ' a bien été créée');
-            } elseif ($req->request->get('published')) {
-                $newDeclaration->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
-                $this->addFlash('success', 'Votre sortie ' . $newDeclaration->getName() . ' a bien été publiée');
+                $this->addFlash('success', 'Votre declaration ' . $newDeclaration->getId() . ' a bien été créée');
+
             };
             $newDeclaration->addAttendee($this->getUser());
 
             $em->persist($newDeclaration);
             $em->flush();
-            return $this->redirectToRoute('app_outing');
+            return $this->redirectToRoute('main_home');
         }
 
-        return $this->render('outing/new.html.twig', [
+        return $this->render('annonce/test.html.twig', [
             'form' => $form->createView(),
         ]);
     }
