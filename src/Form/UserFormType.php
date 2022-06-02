@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserFormType extends AbstractType
 {
@@ -70,13 +71,23 @@ class UserFormType extends AbstractType
                     'second_options' => ['label' => 'Confirmation'],
                     'constraints'=> [
                         new NotBlank(['message' => 'Veuillez saisir un mot de passe',]),
+//                        new Length([
+//                                   'min' => 8,
+//                                   'minMessage' => 'Votre mot de passe doit avoir au moins {{ limit }} caractères',
+//                                     // max length allowed by Symfony for security reasons
+//                                    'max' => 16,
+//                        ]),
                         new Length([
                             'min' => 6,
                             'minMessage'=>'le mot de passe doit contenir au moins 6 caractères',
                             'max' =>16,
                             'maxMessage'=>'le mot de passe doit contenir au moins 6 caractères',
-
                         ]),
+                            new Regex([
+                                'pattern' => "/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[ !\"\#\$%&\'\(\)*+,\-.\/:;<=>?@[\\^\]_`\{|\}~])^.{0,4096}$/",
+                                'message' => 'Le mot de passe doit contenir obligatoirement une minuscule, une majuscule, un chiffre et un caractère spécial.',
+                            ])
+
                     ]
                 ])
 //            }

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 
-use App\Form\PasswordChangeFormType;
+use App\Form\ChangePasswordFormType;
 use App\Form\ProfilFormType;
 use App\Form\UserFormType;
 use App\Repository\UserRepository;
@@ -101,32 +101,32 @@ class UserController extends AbstractController
         return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @IsGranted("ROLE_USER")
-     * @Route("/user/{id}/password-change", name="password_change")
-     */
-    public function passwordChange(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $hasher): Response
-    {
-        $user = $this->getUser();
-        $form = $this->createForm(PasswordChangeFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $password = $form->get('password')->getData();
-            if ($password){
-                $hashedPassword = $hasher->hashPassword($user, $password);
-                $user->setPassword($hashedPassword);
-            }
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            $this->redirectToRoute('main_home');
-        }
-
-        return $this->render('user/passwordChange.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
+//    /**
+//     * @IsGranted("ROLE_USER")
+//     * @Route("/user/{id}/password-change", name="password_change")
+//     */
+//    public function passwordChange(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $hasher): Response
+//    {
+//        $user = $this->getUser();
+//        $form = $this->createForm(ChangePasswordFormType::class, $user);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//
+//            $password = $form->get('password')->getData();
+//            if ($password){
+//                $hashedPassword = $hasher->hashPassword($user, $password);
+//                $user->setPassword($hashedPassword);
+//            }
+//            $entityManager->persist($user);
+//            $entityManager->flush();
+//
+//            $this->redirectToRoute('main_home');
+//        }
+//
+//        return $this->render('user/changePassword.html.twig', [
+//            'user' => $user,
+//            'form' => $form->createView(),
+//        ]);
+//    }
 }

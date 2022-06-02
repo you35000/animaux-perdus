@@ -5,12 +5,15 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use App\Entity\Declaration;
+use App\Entity\Etat;
 use App\Form\AnimalFormType;
 use App\Form\DeclarationFormType;
 use App\Repository\AnimalRepository;
 use App\Repository\DeclarationRepository;
 use App\Repository\EspeceAnimalRepository;
 use App\Repository\RaceRepository;
+use App\Repository\SecteurRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,7 +64,7 @@ class AnnonceController extends AbstractController
     }
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/declaration-etape1", name="_step_one", methods={"GET", "POST"})
+     * @Route("/declaration-etape2", name="_step_tow", methods={"GET", "POST"})
      */
     public function newAnimal(Request $request, AnimalRepository $animalRepository): Response
     {
@@ -119,25 +122,54 @@ class AnnonceController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/declaration-etape2", name="_step_tow", methods={"GET", "POST"})
+     * @Route("/declaration-etape1", name="_step_one", methods={"GET", "POST"})
      */
-    public function newDeclaration(Request $request, DeclarationRepository $declarationRepository): Response
+//    public function newDeclaration(Request $request, DeclarationRepository $declarationRepository): Response
+//    {
+//        $declaration = new Declaration();
+//        $form = $this->createForm(DeclarationFormType::class, $declaration);
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            $declarationRepository->add($declaration, true);
+//
+//            return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
+//        }
+//
+//        return $this->renderForm('annonce/test.html.twig', [
+//            'declaration' => $declaration,
+//            'form' => $form,
+//        ]);
+//    }
+    public function new(Request $req, EntityManagerInterface $em, SecteurRepository $repo): Response
     {
-        $declaration = new Declaration();
-        $form = $this->createForm(DeclarationFormType::class, $declaration);
-        $form->handleRequest($request);
+
+        $form = $this->createForm(DeclarationFormType::class);
+        $form->handleRequest($req);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $declarationRepository->add($declaration, true);
+            $newDeclaration = $form->getData();
+            $newDeclaration->setSecteur($repo->find($req->request->get('outing_form')['place']));
+            $newDeclaration->setOrganizer($this->getUser());
 
-            return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
+            if ($req->request->get('creer')) {
+                $newDeclaration->setEtat($em->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']));
+                $this->addFlash('success', 'Votre sortie ' . $newDeclaration->getName() . ' a bien été créée');
+            } elseif ($req->request->get('published')) {
+                $newDeclaration->setState($em->getRepository(State::class)->findOneBy(['libelle' => 'Ouverte']));
+                $this->addFlash('success', 'Votre sortie ' . $newDeclaration->getName() . ' a bien été publiée');
+            };
+            $newDeclaration->addAttendee($this->getUser());
+
+            $em->persist($newDeclaration);
+            $em->flush();
+            return $this->redirectToRoute('app_outing');
         }
 
-        return $this->renderForm('annonce/newDeclaration.html.twig', [
-            'declaration' => $declaration,
-            'form' => $form,
+        return $this->render('outing/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
-
 
 }

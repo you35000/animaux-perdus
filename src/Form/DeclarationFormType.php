@@ -43,6 +43,11 @@ class DeclarationFormType extends AbstractType
                 'placeholder' => 'Choisissez une commune/ville',
                 'choice_label' => 'nom',
             ])
+
+            ->add('secteurs', null, [
+                'mapped' => false,
+                'attr' => ['type' => 'hidden']
+            ]);
 //            ->add('animaux', EntityType::class, [
 //                'class' => Animal::class,
 //                'label' => 'Animal : ',

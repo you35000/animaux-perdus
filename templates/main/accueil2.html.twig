@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}Annonces de perte{% endblock %}
 
 {% block body %}
@@ -74,7 +73,7 @@
             <div class="col-9">
 
                 {% for declaration in declarations %}
-                <div class="row row-prod">
+                <div class="row">
                 <div class="card mb-3" style="max-width: 540px;">
                     <div class="row g-0">
                         <div class="col-md-3">
@@ -100,7 +99,6 @@
                                    class="btn btn-primary">Edit</a>
                             </div>
                         </div>
-
                     </div>
 
                 </div>
@@ -109,8 +107,6 @@
             </div>
 
         </div>
-    </br>
-
-
+    </div>
 
 {% endblock %}
