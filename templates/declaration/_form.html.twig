@@ -3,8 +3,8 @@
 {#    <button class="btn">{{ button_label|default('Save') }}</button>#}
 {#{{ form_end(form) }}#}
 
-<div class="row">
-    <h2 class="text-center">Créer une declaration  </h2>
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <h5 class="text-center">Créer une declaration  </h5>
     <div class=" col-10 offset-1">
         <div class="card mb-3">
             <div class="row g-0">
@@ -17,36 +17,31 @@
                         <div class="row mt-6">
                             <div class="col-6">
                                 <ul class="list-group list-group-flush">
-                                    <div class="row">
-                                        <div class="col-6">{{ form_widget(form.dateHeureD.date) }}</div>
-                                        <div class="col-5">{{ form_widget(form.dateHeureD.time) }}</div>
+                                    <div class="col-12">
+                                        {{ form_label(form.dateHeureD) }}
+                                        <div class="row">
+                                            <div class="col-6">{{ form_widget(form.dateHeureD.date) }}</div>
+                                            <div class="col-6">{{ form_widget(form.dateHeureD.time) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        {{ form_widget(form.infoSupp,{'attr':{'style':'height:150px'}}) }}
+                                        <label for="name">{{ form_label(form.infoSupp) }}</label>
+                                        {{ form_errors(form.infoSupp) }}
                                     </div>
 
-                                    <li class="list-group-item">{{ form_row(form.infoSupp) }}</li>
                                     <li class="list-group-item">{{ form_row(form.secteurs) }}</li>
                                         <li class="list-group-item">{{ form_row(form.commune) }}</li>
 
 
                                 </ul>
                             </div>
-                            <div class="col-6">
-{#                                <ul class="list-group list-group-flush">#}
-{#                                    <li class="list-group-item">{{ form_row(form.collier) }}</li>#}
-{#                                    <li class="list-group-item">{{ form_row(form.typeColliers) }}</li>#}
-{#                                    <li class="list-group-item">{{ form_row(form.croisements) }}</li>#}
-{#                                    <li class="list-group-item">{{ form_row(form.silhouettes) }}</li>#}
-{#                                    <li class="list-group-item">{{ form_row(form.tailles) }}</li>#}
-{#                                    <li class="list-group-item">{{ form_row(form.poils) }}</li>#}
-{#                                    <li class="list-group-item">{{ form_row(form.couleurs) }}</li>#}
-{#                                </ul>#}
-
-
-                            </div>
+{#
                         </div>
                         <div class="mt-3 text-center">
                             {#                                    <button class="btn btn-success btn-lg me-5">Enregistrer</button>#}
-                            <button class="btn">{{ button_label|default('Save') }}</button>
-                            <a href="{{ path('main_home') }}" class="btn btn-outline-secondary btn-lg">Retour</a>
+{#                            <button class="btn">{{ button_label|default('Save') }}</button>#}
+{#                            <a href="{{ path('main_home') }}" class="btn btn-outline-secondary btn-lg">Retour</a>#}
                         </div>
 
                         {{ form_end(form) }}

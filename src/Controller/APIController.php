@@ -57,8 +57,8 @@ class APIController extends AbstractController
             $secteur->setCommunes($commune);
             $secteur->setLatitude($faker->latitude);
             $secteur->setLongitude($faker->longitude);
-            $secteur->setNom($data->name);
-            $secteur->setAdresse($data->street);
+            $secteur->setNom($data->nom);
+            $secteur->setAdresse($data->adresse);
         }
         if ($secteur->getNom() && $secteur->getAdresse() && $secteur->getCommunes()) {
 

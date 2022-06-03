@@ -20,33 +20,33 @@
                 <div class="col-md-9">
                     <div class="card-body">
                         <h5 class="card-title ps-3">{{ animal.nom }}</h5>
-                        {{ form_start(form) }}
+                        {{ form_start(formAnimal) }}
                         <div class="row mt-5">
                             <div class="col-6">
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">{{ form_row(form.nom) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.especes) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.races) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.sexe) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.castre) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.puceElectro) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.tatouage) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.nom) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.especes) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.races) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.sexe) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.castre) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.puceElectro) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.tatouage) }}</li>
                                     <div class="row md-9">
-                                        <div class="col-6">{{ form_row(form.age) }}</div>
-                                            <div class="col-5">{{ form_row(form.anOuMois) }}</div>
+                                        <div class="col-6">{{ form_row(formAnimal.age) }}</div>
+                                            <div class="col-5">{{ form_row(formAnimal.anOuMois) }}</div>
                                     </div>
 
                                 </ul>
                             </div>
                             <div class="col-6">
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">{{ form_row(form.collier) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.typeColliers) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.croisements) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.silhouettes) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.tailles) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.poils) }}</li>
-                                    <li class="list-group-item">{{ form_row(form.couleurs) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.collier) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.typeColliers) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.croisements) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.silhouettes) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.tailles) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.poils) }}</li>
+                                    <li class="list-group-item">{{ form_row(formAnimal.couleurs) }}</li>
                                 </ul>
                                 <div class="mt-3 text-center">
 {#                                    <button class="btn btn-success btn-lg me-5">Enregistrer</button>#}
@@ -57,7 +57,7 @@
                             </div>
                         </div>
 
-                        {{ form_end(form) }}
+                        {{ form_end(formAnimal) }}
                     </div>
                 </div>
             </div>

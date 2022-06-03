@@ -75,7 +75,7 @@
                 <div class="col-5">
                     <div class="form-floating mb-3">
                         <select id="commune" class="form-select" v-model="selectedCommune" @change="filter(selectedCommune)">
-                            <option v-for="commune in communes" v-bind:value="commune">{{commune.nom}}</option>
+                            <option v-for="commune in communes" v-bind:value="commune">{{communes.nom}}</option>
                         </select>
                         <label for="city">Commune</label>
                     </div>
@@ -83,7 +83,7 @@
                 <div class="col-5">
                     <div class="form-floating mb-3">
                         <select id="place" class="form-select" v-model="selectedSecteur" @change="log(selectedSecteur)" required>
-                            <option v-for="secteur in selectedSecteurs" v-bind:value="secteur">{{secteur.nom}}</option>
+                            <option v-for="secteur in selectedSecteurs" v-bind:value="secteur">{{secteurs.nom}}</option>
                         </select>
                         <label for="secteur">Secteur</label>
                     </div>
@@ -92,7 +92,7 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#newSecteur"><i class="fa fa-plus"></i></button>
                 </div>
                <div v-if="secteurId">
-                {% endverbatim %}
+{#                {% endverbatim %}#}
                         <div class="col-6 d-none">
                             <div class="form-floating mb-3">
                                 {{ form_widget(form.secteurs, {'attr':{'v-model':'secteurId'}}) }}
@@ -103,7 +103,7 @@
                         {% verbatim %}
                 </div>
                 <div class="col-12">
-                <div class="card" v-if="selectedPlace">
+                <div class="card" v-if="selectedSecteur">
                     <div class="card-body">
                         <h5 class="card-title text-center">Localisation : {{selectedSecteur.nom}}</h5>
                     </div>
@@ -151,7 +151,7 @@
                     </ul>
                 </div>
                 </div>
-                {% endverbatim %}
+{#                {% endverbatim %}#}
 
                     </div>
                 </div>

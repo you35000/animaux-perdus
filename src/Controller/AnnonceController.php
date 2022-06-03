@@ -62,29 +62,6 @@ class AnnonceController extends AbstractController
         // Renvoie un tableau avec la structure des races de l'identifiant de l'espèce animal fourni
         return new JsonResponse($responseArray);
     }
-    /**
-     * @IsGranted("ROLE_USER")
-     * @Route("/declaration-etape2", name="_step_tow", methods={"GET", "POST"})
-     */
-    public function newAnimal(Request $request, AnimalRepository $animalRepository): Response
-    {
-        $animal = new Animal();
-        $form = $this->createForm(AnimalFormType::class, $animal);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $animalRepository->add($animal);
-            return $this->redirectToRoute('app_animal_index');
-        }
-
-        $currentUrl = $this->generateUrl('app_annonce_ajax_races');
-
-        return $this->renderForm('annonce/newAnimal.html.twig', [
-            'animal' => $animal,
-            'form' => $form,
-            'currentUrl' => $currentUrl,
-        ]);
-    }
 
     /**
      * @IsGranted("ROLE_USER")
@@ -120,10 +97,10 @@ class AnnonceController extends AbstractController
         return new JsonResponse($rep);
     }
 
-    /**
-     * @IsGranted("ROLE_USER")
-     * @Route("/declaration-etape1", name="_step_one", methods={"GET", "POST"})
-     */
+//    /**
+//     * @IsGranted("ROLE_USER")
+//     * @Route("/annonce", name="_step_one", methods={"GET", "POST"})
+//     */
 //    public function newDeclaration(Request $request, DeclarationRepository $declarationRepository): Response
 //    {
 //        $declaration = new Declaration();
@@ -141,19 +118,32 @@ class AnnonceController extends AbstractController
 //            'form' => $form,
 //        ]);
 //    }
-    public function new(Request $req, EntityManagerInterface $em, SecteurRepository $repo): Response
+
+    /**
+     * @IsGranted("ROLE_USER")
+     * @Route("/annonce", name="_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, EntityManagerInterface $em, SecteurRepository $repo, AnimalRepository $animalRepository): Response
     {
 
         $form = $this->createForm(DeclarationFormType::class);
-        $form->handleRequest($req);
+        $form->handleRequest($request);
 
+        $animal = new Animal();
+        $formAnimal = $this->createForm(AnimalFormType::class, $animal);
+        $formAnimal->handleRequest($request);
+
+        if ($formAnimal->isSubmitted() && $formAnimal->isValid()) {
+            $animalRepository->add($animal);
+            return $this->redirectToRoute('app_animal_index');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newDeclaration = $form->getData();
-            $newDeclaration->setSecteur($repo->find($req->request->get('declaration_form')['secteur']));
+            $newDeclaration->setSecteur($repo->find($request->request->get('declaration_form')['secteur']));
             $newDeclaration->setOrganizer($this->getUser());
 
-            if ($req->request->get('creer')) {
+            if ($request->request->get('creer')) {
                 $newDeclaration->setEtat($em->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']));
                 $this->addFlash('success', 'Votre declaration ' . $newDeclaration->getId() . ' a bien été créée');
 
@@ -165,9 +155,21 @@ class AnnonceController extends AbstractController
             return $this->redirectToRoute('main_home');
         }
 
-        return $this->render('annonce/test.html.twig', [
+        $currentUrl = $this->generateUrl('app_annonce_ajax_races');
+
+        return $this->render('annonce/annonce.html.twig', [
             'form' => $form->createView(),
+            'animal' => $animal,
+            'formAnimal' => $formAnimal->createView(),
+            'currentUrl' => $currentUrl,
         ]);
     }
+
+
+
+
+
+
+
 
 }

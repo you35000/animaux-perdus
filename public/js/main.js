@@ -51,7 +51,7 @@ const app = new Vue({
             axios.post(urlSecteurs, this.newSecteur).then(res => this.allSecteurs.push(res.data));
         },
         test() {
-            console.log(this.SecteurId);
+            console.log(this.secteurId);
         }
     },
 });

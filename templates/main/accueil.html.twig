@@ -1,116 +1,153 @@
 {% extends 'base.html.twig' %}
 
-
-{% block title %}Annonces de perte{% endblock %}
+{% block title %} MainController!{% endblock %}
 
 {% block body %}
+    {#    {% include 'Modules/alert.html.twig' %} #}
+    {% for message in app.flashes('success') %}
+        <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+            <div class="alert alert-success">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+            <div class="alert alert-warning">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="position-fixed p-3" style="z-index: 1000; top: 80px;right: 50px">
+            <div class="alert alert-danger">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    {% endfor %}
 
-    <p><small>
-            <center>Vous avez perdu votre animal? fait vite une déclatation. si vous avez trouvé,
-                aperçu un animal ? fait un signalement
-            </center>
-        </small></p>
+    <div class="row ">
 
-    <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-{#        <div class="col-3 my-5 bg-dark text-light p-4">#}
+        <div class="col-3 my-5 bg-dark text-light p-4">
 
-            <h3>Filter les declarations</h3>
-            {{ form_start(formSearch) }}
+            {{ form_start(formS) }}
             <div class="row">
-                <div class="col-3">
-                    {{ form_row(formSearch.secteurs) }}
-                    {#                {{ form_row(formSearch.animaux) }}#}
+                <div class="col-6">
+                    {{ form_row(formS.secteurs) }}
                 </div>
+                <div class="col-6">
+                    {{ form_row(formS.search) }}
+                </div>
+
             </div>
 
-            <div class="col-2 align-self-center">
-                <button type="submit" class="btn btn-dark btn-lg">Rechercher</button>
+            <div class="text-center">
+                <button class="btn btn-primary">Rechercher</button>
             </div>
             {{ form_end(formSearch) }}
-            <br>
-{#        </div>#}
+        </div>
+
+
+        <div class="col-9 my-5">
+
+            <table class="text-center table table-hover table-light table-striped align-middle">
+                <thead class="table-dark">
+                <tr>
+                    <th>Nom</th>
+                    <th>Date de la disparition</th>
+                    <th>Sexe</th>
+                    <th>Race</th>
+                    <th>Etat</th>
+                    <th>Nom du proprietaire </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for d in declarations %}
+                    {% if not ((d.etat.libelle == 'Créée')and(app.user != o.user)) %}
+
+                        <tr style="height:70px  ">
+                            <td><a href="{{ path('app_animal_show',{id:d.id}) }}">{{ d.animaux.nom }}</a></td>
+                            <td>
+                                <div class="row g-0">
+                                    <div class="col-6">
+                                        {{ d.dateHeureD ? declaration.dateHeureD|date('Y-m-d') : ''}}
+                                    </div>
+                                    <div class="col-6">
+                                        {{ d.dateHeureD ? declaration.dateHeureD|date('H:i') : ''  }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{ d..animaux.sexe }}</td>
+                            <td>{{ d.animaux.races }}</td>
+                            <td><span class="badge
+                                {% if d.etats.libelle == 'Recherche abondonnée' %}
+                                    bg-danger
+                                {% elseif d.etats.libelle == 'Recherche en cours' %}
+                                    bg-primary
+                                {% elseif d.etats.libelle == 'Archivée' %}
+                                    bg-warning
+
+                                {% elseif d.etats.libelle == 'Trouvé' %}
+                                    bg-success
+
+                                {% endif %}">{{ d.etats.libelle }}</span></td>
+
+                            <td>
+                                <a href="{{ path('user_show',{id:d.users.id}) }}">{{ d.users.pseudo }}</a>
+                            </td>
+                            {#                            <td>#}
+                            {#                                #}{# Publication de la sortie si elle est créée et que l'utilisateur connecté est bien l'organisateur #}
+                            {#                                {% if (o.users == app.user) and (o.etats.libelle == 'Créée') %}#}
+                            {#                                    <a href="{{ path('outing_published',{'id':o.id}) }}" class="btn btn-hover color-5"#}
+                            {#                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Publier">#}
+                            {#                                        <i class="fa fa-bullhorn"></i>#}
+                            {#                                    </a>#}
+                            {#                                {% endif %}#}
+                            {#                                #}{# Si l'utilisateur est inscrit, il peut se désister avant le début de l'activité #}
+                            {#                                {% if (app.user in o.attendees) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}#}
+                            {#                                    <a href="{{ path('outing_withdraw',{'id':o.id}) }}" class="btn btn-hover color-11"#}
+                            {#                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Se désister">#}
+                            {#                                        <i class="fa fa-user-minus"></i>#}
+                            {#                                    </a>#}
+                            {#                                {% endif %}#}
+                            {#                                #}{# Si l'utilisateur n'est pas dans la liste des participants est que le statut est ouvert, il peut s'inscrire #}
+                            {#                                {% if (app.user not in o.attendees) and (o.state.libelle == 'Ouverte') %}#}
+                            {#                                    <a href="{{ path('outing_register',{'id':o.id}) }}" class="btn btn-hover color-9"#}
+                            {#                                       data-bs-toggle="tooltip" data-bs-placement="top" title="S'inscrire">#}
+                            {#                                        <i class="fa fa-user-plus"></i>#}
+                            {#                                    </a>#}
+                            {#                                {% endif %}#}
+                            {#                                #}{# Si l'utilisateur est bien l'organisateur et que l'activité n'a pas débutée, il peut l'annuler #}
+                            {#                                {% if (app.user == o.organizer) and ((o.state.libelle == 'Ouverte') or (o.state.libelle == 'Clôturée')) %}#}
+                            {#                                    <a href="{{ path('outing_cancel',{'id':o.id}) }}" class="btn btn-hover color-1"#}
+                            {#                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Annuler">#}
+                            {#                                        <i class="fa fa-ban"></i>#}
+                            {#                                    </a>#}
+                            {#                                {% endif %}#}
+                            {#                                #}{# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la supprimer #}
+                            {#                                {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}#}
+                            {#                                    <a href="{{ path('outing_delete',{'id':o.id}) }}" class="btn btn-hover color-10"#}
+                            {#                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer">#}
+                            {#                                        <i class="fa fa-trash"></i>#}
+                            {#                                    </a>#}
+                            {#                                {% endif %}#}
+                            {#                                #}{# Si l'utilisateur est bien l'organisateur et que l'activité n'est pas ouverte il peut la modifier #}
+                            {#                                {% if (app.user == o.organizer) and (o.state.libelle == 'Créée') %}#}
+                            {#                                    <a href="{{ path('outing_update',{'id':o.id}) }}" class="btn btn-hover color-8"#}
+                            {#                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier">#}
+                            {#                                        <i class="fa fa-pencil"></i>#}
+                            {#                                    </a>#}
+                            {#                                {% endif %}#}
+                            {#                            </td>#}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            {{ knp_pagination_render(annonces) }}
         </div>
     </div>
-    </div>
-
-
-
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3">
-
-                {% for signalement in signalements %}
-{#                    <div class="d-flex flex-row">#}
-{#                        <div class="col-12">#}
-                            <div class="card mb-1" style="max-width: 540px;">
-{#                                <div class="row g-0">#}
-{#                                    <div class="col-md-8">#}
-                                        <div class="card-body">
-                                            <p class="card-text"><small class="text-muted">
-                                                    {{ signalement.auteur}}</small>
-                                            </p>
-                                            <p class="card-text"><small
-                                                        class="text-muted"> Le
-                                                    {{ signalement.dateHeure ? signalement.dateHeure|date('Y-m-d') : '' }}
-                                                    A {{ signalement.dateHeure ? signalement.dateHeure|date('H:i') : '' }}</small>
-                                            </p>
-                                            <p class="card-text"><small class="text-muted">
-                                                    {{ signalement.message}}</small>
-                                            </p>
-
-                                        </div>
-{#                                    </div>#}
-{#                                </div>#}
-                            </div>
-{#                        </div>#}
-{#                    </div>#}
-
-                {% endfor %}
-            </div>
-
-            <div class="col-9">
-
-                {% for declaration in declarations %}
-                <div class="row row-prod">
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-3">
-                            <img src="{{ asset('img/logo.jpg') }}" class="img-fluid rounded-start"                            alt="...">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ declaration.animaux.nom }}</h5>
-                                <p class="card-text"><small
-                                            class="text-muted">{{ declaration.animaux.races.especes }}
-                                        perdu le
-                                        {{ declaration.dateHeureD ? declaration.dateHeureD|date('Y-m-d') : '' }}
-                                        A {{ declaration.dateHeureD ? declaration.dateHeureD|date('H:i') : '' }}</small>
-                                </p>
-                                <p class="card-text"><small class="text-muted">
-                                        Nom  : {{ declaration.animaux.nom }}<br>
-                                        Sexe : {{ declaration.animaux.sexe }}<br>
-                                        Race : {{ declaration.animaux.races }}<br>
-                                        Etat : {{ declaration.etats.libelle }}</small></p>
-                                <a href="{{ path('app_declaration_show', {id: declaration.id}) }}"
-                                   class="btn btn-primary">Show</a>
-                                <a href="{{ path('app_declaration_edit', {id: declaration.id}) }}"
-                                   class="btn btn-primary">Edit</a>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                {% endfor %}
-                </div>
-            </div>
-
-        </div>
-    </br>
-
-
-
 {% endblock %}

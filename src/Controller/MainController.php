@@ -19,20 +19,20 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main_home"), methods={"GET"})
      */
-//    public function getLists(  SignalementRepository $signalementRepository,
-//                               DeclarationRepository $declarationsRepository ): Response
-//    {
-//        return $this->render('main/accueil.html.twig', [
-//
-//            $signalements = $signalementRepository->findAll(),
-//            $declarations = $declarationsRepository->findAll(),
-//
-//            'signalements' => $signalements,
-//            'declarations' => $declarations,
-//        ]);
-//    }
+    public function getLists(SignalementRepository $signalementRepository,
+                             DeclarationRepository $declarationsRepository): Response
+    {
+        return $this->render('main/accueil.html.twig', [
 
-    public function index(Request $request,DeclarationRepository $declarationRepository, SignalementRepository $signalementRepository): Response
+            $signalements = $signalementRepository->findAll(),
+            $declarations = $declarationsRepository->findAll(),
+
+            'signalements' => $signalements,
+            'declarations' => $declarations,
+        ]);
+    }
+
+    public function index(Request $request, DeclarationRepository $declarationRepository, SignalementRepository $signalementRepository): Response
     {
         $formSearch = $this->createForm(SearchFormType::class);
         $formSearch->handleRequest($request);
@@ -40,27 +40,28 @@ class MainController extends AbstractController
         if ($formSearch->isSubmitted()) {
             $searchDeclaration = $formSearch ['secteurs']->getData();
 //            $searchAnimal = $formSearch ['animaux']->getData();
-
+            return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
             //dd($searchDeclaration);
 
 
-
-            return $this->render('main/accueil.html.twig', [
-                'formSearch' => $formSearch->createView(),
-                'signalements' => $signalements,
-                'declarations' => $declarationRepository->findByFiltre($searchDeclaration )
-
-            ]);
         }
         return $this->render('main/accueil.html.twig', [
-            'formSearch' => $formSearch->createView(),
+            'formS' => $formSearch->createView(),
             'signalements' => $signalements,
+//            'declarations' => $declarationRepository->findByFiltre($searchDeclaration)
             'declarations' =>$declarationRepository->findDefault(),
         ]);
-
     }
 
+//        return $this->render('main/accueil.html.twig', [
+//            'formSearch' => $formSearch->createView(),
+//            'signalements' => $signalements,
+//            'declarations' =>$declarationRepository->findDefault(),
+//        ]);
 
+
+
+}
 ///////////////////////////////////////////////////////////////////////////////////
 //    public function index(Request $req, EntityManagerInterface $mgr, UpdateEtat $updateEtat, PaginatorInterface $paginator): Response
 //    {
@@ -91,4 +92,4 @@ class MainController extends AbstractController
 //    }
 
 
-}
+//}
