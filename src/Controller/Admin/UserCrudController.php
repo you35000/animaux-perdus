@@ -13,11 +13,5 @@ class UserCrudController extends AbstractCrudController
     {
         return User::class;
     }
-    public function configureFilters(Filters $filters): Filters
-   {
-        return $filters
-            ->add(EntityFilter::new('user'))
 
-        ;
-    }
 }

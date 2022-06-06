@@ -1,0 +1,32 @@
+{% extends '/base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Créer une Declaration{% endblock %}
+
+{% block body %}
+
+    {% include 'modal/declaration/declarationModal.html.twig' %}
+
+    {% embed 'annonce/forms/declarationForm.html.twig' %}
+        {% block validationButtonLabel %}
+            Créer la declaration !
+        {% endblock %}
+    {% endembed %}
+
+{#    {{ include 'modal/activity/activityModal.html.twig' }}#}
+    {#    <a href="{{ path('main_home') }}">back to list</a>#}
+{#    <h1>Créer un animal</h1>#}
+{#    {{ include('animal/_form.html.twig', {'button_label': 'Save'}) }}#}
+{#    <a href="{{ path('main_home') }}">back to list</a>#}
+{#    #}{#    {{ include('animal/_delete_form.html.twig') }}#}
+
+
+{#{% block endjs %}#}
+{#    <script src="{{ asset('js/newAndEditAjaxRaces.js') }}"></script>#}
+{#{% endblock  %}#}
+
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{{ asset('js/declarationEvents.js') }}"></script>
+{% endblock %}

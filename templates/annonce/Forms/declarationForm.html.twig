@@ -1,0 +1,19 @@
+<div class="flex_div">
+    <div>
+        {{ form_start(declarationForm) }}
+        {{ form_row(declarationForm.dateHeureD) }}
+        {{ form_row(declarationForm.infoSupp) }}
+
+    </div>
+    <div>
+        {{ form_row(declarationForm.commune, {'attr' : {'data-url': path('declaration_get_secteurs')}}) }}
+        <div class="flex_div">
+            {{ form_row(declarationForm.secteurs) }}
+            <button type="button" id="openSecteurModal" data-toggle="modal" data-target="#secteurModal"
+                    class="">+
+            </button>
+        </div>
+    </div>
+</div>
+<button class="">{% block validationButtonLabel %}{% endblock %}</button>
+{{ form_end(declarationForm) }}

@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class APIController extends AbstractController
 {
     /**
-     * @Route("/villes", name="villes_get", methods={"GET"})
+     * @Route("/Communes", name="communes_get", methods={"GET"})
      */
     public function getCommunes(CommuneRepository $communeRepository): JsonResponse
     {

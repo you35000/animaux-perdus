@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Détail de la declaration
+{% endblock %}
+
+{% block body %}
+
+    <div class="declaration_detail_bloc">
+    <div id="map"></div>
+    <div id="declaration_detail">
+
+        <h3>{{ declaration.user.pseudo }}</h3>
+        <label>Où</label>
+        <div class="detail_border_box">
+            <div class="flex_div">
+                <label>Commune : </label>
+                <div>{{ declaration.secteur.communes.nom }}</div>
+            </div>
+            <div class="flex_div">
+                <label>Adresse : </label>
+                <div>{{ declaration.secteur.adresse }}</div>
+            </div>
+        </div>
+        <label>Animal perdu le </label>
+        <div class="detail_border_box">
+            <div class="flex_div">
+                <label>Date : </label>
+                <div>{{ declaration.dateHeureD|date('d/m/Y') }}</div>
+            </div>
+            <div class="flex_div">
+                <label>Heure : </label>
+                <div>{{ declaration.dateHeureD|date('h:i') }}</div>
+            </div>
+        </div>
+        <div class="detail_border_box">
+            <div class="flex_div">
+                <label>Espèce : </label>
+                <div>{{ declaration.animaux.races.especes }}</div>
+            </div>
+            <div class="flex_div">
+                <label>Race : </label>
+                <div>{{ declaration.animaux.races}}</div>
+                <div class="flex_div">
+                    <label>Nom animal : </label>
+                    <div>{{ declaration.animaux.nom}}</div>
+                </div>
+                <div class="flex_div">
+                    <label>Etat : </label>
+                    <div>{{ declaration.etats.libelle }}</div>
+
+                </div>
+            </div>
+        </div>
+        <label>Infos sup</label>
+        <div class="detail_border_box">
+
+            <div class="flex_div">
+                <label>Description : </label>
+                <div>{{ declaration.infoSup }}</div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+
+{% endblock %}
+
+
+
+{% block extrajs %}
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnL0R57xn7FQg6DCT0uKehQ6prVPuzxb4&callback=initMap">
+    </script>
+    <script>
+
+        function initMap() {
+
+            let map = '';
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: {{ declaration.secteur.latitude }}, lng: {{ declaration.secteur.longitude }}},
+                zoom: 15
+            });
+
+            const svgMarker = {
+                path: "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+                fillColor: "green",
+                fillOpacity: 0.6,
+                strokeWeight: 0,
+                rotation: 0,
+                scale: 2,
+                anchor: new google.maps.Point(15, 30),
+            };
+
+            const marker = new google.maps.Marker({
+                position: {lat: {{ declaration.secteur.latitude }}, lng: {{ declaration.secteur.longitude }}},
+                map: map,
+                icon: svgMarker
+            });
+        }
+
+    </script>
+{% endblock %}

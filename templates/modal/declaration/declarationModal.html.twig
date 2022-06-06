@@ -1,0 +1,12 @@
+{# permet d'inclure et faire hériter un fichier twig #}
+{% embed  'modal/modal.html.twig' with {modal_id : 'secteurModal'} %}
+    {% block modalTitle %}
+        Nouveau secteur
+    {% endblock %}
+    {% block modalBody %}
+        {% include 'annonce/forms/secteurForm.html.twig' %}
+    {% endblock %}
+    {% block modalValidationbutton %}
+        <button type="button" class="btn btn-primary" id="secteurCreate">Créer</button>
+    {% endblock %}
+{% endembed %}

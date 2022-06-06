@@ -1,57 +1,106 @@
+{#<div class="row">#}
+{#    <div class=" col-10 offset-1">#}
+{#        <div class="card mb-3">#}
+{#            <div class="row g-0">#}
+
+{#        <div class="row mt-5">#}
+{#            <div class="col-12">#}
+{#                <div class="card-body">#}
+{#                    {{ form_start(formD) }}#}
+{#                    <div class="col-6">#}
+{#                        {{ form_label(formD.dateHeureD) }}#}
+{#                        <div class="row">#}
+{#                            <div class="col-7">{{ form_widget(formD.dateHeureD.date) }}</div>#}
+{#                            <div class="col-5">{{ form_widget(formD.dateHeureD.time) }}</div>#}
+{#                        </div>#}
+{#                    </div>#}
+
+{#                    <div class="col-6">#}
+{#                        <div class="form-floating mb-3">#}
+{#                            {{ form_widget(formD.infoSupp,{'attr':{'style':'height:150px'}}) }}#}
+{#                            <label for="name">{{ form_label(formD.infoSupp) }}</label>#}
+{#                            {{ form_errors(formD.infoSupp) }}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="col-6">#}
+{#                        <div class="form-floating mb-3">#}
+{#                            {{ form_row(formD.secteurs) }}#}
+{#                            <label for="name">{{ form_label(formD.secteurs) }}</label>#}
+{#                            {{ form_errors(formD.secteurs) }}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="col-6">#}
+{#                        <div class="form-floating mb-3">#}
+{#                            {{ form_row(formD.commune) }}#}
+{#                            <label for="name">{{ form_label(formD.commune) }}</label>#}
+{#                            {{ form_errors(formD.commune) }}#}
+{#                        </div>#}
+{#                    </div>#}
+
+{#                    {{ form_end(formD) }}#}
+{#                </div>#}
+
+{#            </div>#}
+{#        </div>#}
+{#        </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+
+
 {#{{ form_start(form) }}#}
 {#    {{ form_widget(form) }}#}
 {#    <button class="btn">{{ button_label|default('Save') }}</button>#}
 {#{{ form_end(form) }}#}
 
-<div class="row" xmlns="http://www.w3.org/1999/html">
-    <h5 class="text-center">Créer une declaration  </h5>
+<div class="row">
+    <h5 class="text-center">Fiche déclaration </h5>
     <div class=" col-10 offset-1">
         <div class="card mb-3">
             <div class="row g-0">
 
-
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="card-body">
-{#                        <h5 class="card-title ps-3">{{ declaration.dateHeureD }}</h5>#}
-                        {{ form_start(form) }}
-                        <div class="row mt-6">
+{#                        <h5 class="card-title ps-3">{{ }}</h5>#}
+                        {{ form_start(formD) }}
+                        <div class="row mt-5">
                             <div class="col-6">
                                 <ul class="list-group list-group-flush">
-                                    <div class="col-12">
-                                        {{ form_label(form.dateHeureD) }}
+                                    <li class="list-group-item">
                                         <div class="row">
-                                            <div class="col-6">{{ form_widget(form.dateHeureD.date) }}</div>
-                                            <div class="col-6">{{ form_widget(form.dateHeureD.time) }}</div>
+                                            <div class="col-6">{{ form_row(formD.dateHeureD.date) }}</div>
+                                            <div class="col-6">{{ form_row(formD.dateHeureD.time) }}</div>
                                         </div>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        {{ form_widget(form.infoSupp,{'attr':{'style':'height:150px'}}) }}
-                                        <label for="name">{{ form_label(form.infoSupp) }}</label>
-                                        {{ form_errors(form.infoSupp) }}
-                                    </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row">
+                                            {{ form_widget(formD.infoSupp,{'attr':{'style':'height:150px'}}) }}
+                                            <label for="name">{{ form_label(formD.infoSupp) }}</label>
+                                            {{ form_errors(formD.infoSupp) }}
+                                        </div>
 
-                                    <li class="list-group-item">{{ form_row(form.secteurs) }}</li>
-                                        <li class="list-group-item">{{ form_row(form.commune) }}</li>
 
+                                    </li>
 
                                 </ul>
                             </div>
-{#
-                        </div>
-                        <div class="mt-3 text-center">
-                            {#                                    <button class="btn btn-success btn-lg me-5">Enregistrer</button>#}
-{#                            <button class="btn">{{ button_label|default('Save') }}</button>#}
-{#                            <a href="{{ path('main_home') }}" class="btn btn-outline-secondary btn-lg">Retour</a>#}
+                            <div class="col-6">
+                                <ul class="list-group list-group-flush">
+{#                                    <li class="list-group-item">{{ form_row(formD.secteurs.commune) }}</li>#}
+                                    <li class="list-group-item">{{ form_row(formD.secteurs) }}</li>
+                                </ul>
+                            </div>
+
                         </div>
 
-                        {{ form_end(form) }}
+                        {{ form_end(formD) }}
+
+
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="text-center">
 
+
+            </div>
         </div>
     </div>
 </div>
-

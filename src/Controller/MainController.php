@@ -19,49 +19,64 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main_home"), methods={"GET"})
      */
-    public function getLists(SignalementRepository $signalementRepository,
-                             DeclarationRepository $declarationsRepository): Response
+//    public function getLists(SignalementRepository $signalementRepository,
+//                             DeclarationRepository $declarationsRepository): Response
+//    {
+//        return $this->render('main/accueil.html.twig', [
+//
+//            $signalements = $signalementRepository->findAll(),
+//            $declarations = $declarationsRepository->findAll(),
+//
+//            'signalements' => $signalements,
+//            'declarations' => $declarations,
+//        ]);
+//    }
+
+    public function index(Request $request,DeclarationRepository $declarationRepository,
+                          EntityManagerInterface $mgr,
+                          SignalementRepository $signalementRepository,
+                          UpdateEtat $updateEtat,
+                          PaginatorInterface $paginator): Response
     {
-        return $this->render('main/accueil.html.twig', [
-
-            $signalements = $signalementRepository->findAll(),
-            $declarations = $declarationsRepository->findAll(),
-
-            'signalements' => $signalements,
-            'declarations' => $declarations,
-        ]);
-    }
-
-    public function index(Request $request, DeclarationRepository $declarationRepository, SignalementRepository $signalementRepository): Response
-    {
-        $formSearch = $this->createForm(SearchFormType::class);
-        $formSearch->handleRequest($request);
+//        $updateEtat->updateDeclarations();
         $signalements = $signalementRepository->findAll();
-        if ($formSearch->isSubmitted()) {
+        $declarations = $declarationRepository->findAll();
+
+        $formSearch = $this->createForm(SearchFormType::class, null, [
+            'action' => $this->generateUrl('main_home'),
+            'method' => 'GET',
+        ]);
+
+        $formSearch->handleRequest($request);
+        if ($formSearch->isSubmitted() && $formSearch->isValid()){
             $searchDeclaration = $formSearch ['secteurs']->getData();
+            $declarations = $mgr->getRepository(Declaration::class)->filters($searchDeclaration);
 //            $searchAnimal = $formSearch ['animaux']->getData();
-            return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
+
             //dd($searchDeclaration);
 
+            //Pagination des sorties :
+            $declarationToDisplay = $paginator->paginate($declarations, $request->query->getInt('page', 1), 6);
 
+            return $this->render('main/accueil.html.twig', [
+//            return $this->render('main/accueil.html.twig', [
+                'formSearch' => $formSearch->createView(),
+                 'annonces' =>$declarationToDisplay,
+                'signalements' => $signalements,
+                'declarations' => $declarationRepository->findByFiltre($searchDeclaration )
+
+            ]);
         }
+        $declarationToDisplay = $paginator->paginate($declarations, $request->query->getInt('page', 1), 6);
         return $this->render('main/accueil.html.twig', [
-            'formS' => $formSearch->createView(),
+//        return $this->render('main/accueil.html.twig', [
+            'formSearch' => $formSearch->createView(),
+            'annonces' =>$declarationToDisplay,
             'signalements' => $signalements,
-//            'declarations' => $declarationRepository->findByFiltre($searchDeclaration)
             'declarations' =>$declarationRepository->findDefault(),
         ]);
+
     }
-
-//        return $this->render('main/accueil.html.twig', [
-//            'formSearch' => $formSearch->createView(),
-//            'signalements' => $signalements,
-//            'declarations' =>$declarationRepository->findDefault(),
-//        ]);
-
-
-
-}
 ///////////////////////////////////////////////////////////////////////////////////
 //    public function index(Request $req, EntityManagerInterface $mgr, UpdateEtat $updateEtat, PaginatorInterface $paginator): Response
 //    {
@@ -87,9 +102,9 @@ class MainController extends AbstractController
 //            'controller_name' => 'MainController',
 //            'declarations' => $declarationsToDisplay,
 //            'secteur' => $secteurs,
-//            'form' => $form->createView(),
+//            'formS' => $form->createView(),
 //        ]);
 //    }
 
 
-//}
+}

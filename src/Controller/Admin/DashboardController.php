@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Animal;
 use App\Entity\Commune;
 use App\Entity\Couleur;
 use App\Entity\Departement;
@@ -44,6 +45,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Secteurs','fas fa-list',Secteur::class);
         yield MenuItem::linkToCrud('couleurs','fas fa-list',Couleur::class);
         yield MenuItem::linkToCrud('Espèces d\'animaux','fas fa-list',EspeceAnimal::class);
+        yield MenuItem::linkToCrud('Animaux','fas fa-list',Animal::class);
         yield MenuItem::linkToCrud('Races','fas fa-list',Race::class);
         yield MenuItem::linkToCrud('Tailles','fas fa-list',Taille::class);
         yield MenuItem::linkToCrud('Poils','fas fa-list',Poil::class);

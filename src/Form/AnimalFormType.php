@@ -131,11 +131,13 @@ class AnimalFormType extends AbstractType
             ->add('anOuMois', ChoiceType::class, [
                 'label' => 'An ou Mois :',
                 'choices' => [
-                    'placeholder' => 'Selectionnez le type d\'âge',
+
                     'An(s)' => true,
-                    'Mois' => false,
-                ]
+                    'Mois' => false
+                ],
+                 'placeholder' => 'Le type d\'âge ?'
             ])
+
             ->add('photo', FileType::class, [
                 'label' => 'Photo',
                 'required' => false,
@@ -225,8 +227,9 @@ class AnimalFormType extends AbstractType
         $especes = $this->em->getRepository(EspeceAnimal::class)->find($data['especes']);
         $this->addElements($form, $especes);
     }
+
     function onPreSetData(FormEvent $event) {
-        $person = $event->getData();
+//        $animal = $event->getData();
         $form = $event->getForm();
 
 
@@ -243,4 +246,5 @@ class AnimalFormType extends AbstractType
             'data_class' => Animal::class,
         ]);
     }
+
 }

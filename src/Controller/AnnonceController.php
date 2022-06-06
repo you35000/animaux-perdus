@@ -19,157 +19,110 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/internal", name = "app_annonce")
+ * @Route("/annonce", name = "app_annonce")
+ *
  */
+//, name = "app_annonce")
+// $this->denyAccessUnlessGranted();
 
 class AnnonceController extends AbstractController
 
 {
     /**
-     * Renvoie une chaîne JSON avec les races de l'espèce animal avec l'identifiant fourni.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     *
-     *
+     * @Route("/animal/{id}/edit", name="_edit", methods={"GET", "POST"})
      */
-    public function listRacesAnimalAction(Request $request)
-    {
-        // Get Entity manager and repository
-        $em = $this->getDoctrine()->getManager();
-        $racesRepository = $em->getRepository("AppBundle:Race");
-
-        // Recherche les races qui appartiennent à l'espèce animal' avec l'id donné comme paramètre GET "especeAnimalid"
-        $races = $racesRepository->createQueryBuilder("q")
-            ->where("q.especeAnimal = :especeAnimalid")
-            ->setParameter("especeAnimalid", $request->query->get("especeAnimalid"))
-            ->getQuery()
-            ->getResult();
-
-        // Sérialiser dans un tableau les données dont nous avons besoin, dans ce cas uniquement le nom et l'identifiant
-        // Remarque: vous pouvez également utiliser un sérialiseur, à des fins d'explication, nous le ferons manuellement
-        $responseArray = array();
-
-        foreach($races as $race){
-            $responseArray[] = array(
-                "id" => $race->getId(),
-                "nom" => $race->getNom()
-            );
-        }
-        // Renvoie un tableau avec la structure des races de l'identifiant de l'espèce animal fourni
-        return new JsonResponse($responseArray);
-    }
-
-    /**
-     * @IsGranted("ROLE_USER")
-     * @Route("/ajax/races", name="_ajax_races", methods={"POST"})
-     */
-    public function ajaxGetRaces(
+    public function edit(
+        int $id,
         Request $request,
-        AnimalRepository $animalRepository,
-        RaceRepository $raceRepository,
-        EspeceAnimalRepository $especeAnimalRepository
-    ): JsonResponse
+        AnimalRepository $animalRepository
+    ): Response
     {
-        $datas = json_decode($request->getContent(), true);
+        $animal = $animalRepository->find($id);
 
-        $getEspeces = $especeAnimalRepository->findOneBy(['id' => $datas["id"]]);
+        if ($animal == null) throw new NotFoundHttpException("L'animal n'existe pas");
 
-        if ($getEspeces == null) {
-            return new JsonResponse(["error" => "Aucune race ne correspond à cette espèce"]);
-        }
-
-        $races = $getEspeces->getRaces();
-        $rep = [];
-        $index = 0;
-        foreach ($races as $race) {
-            $rep[$index] = [
-                "id" => $race->getId(),
-                "nom" => $race->getNom(),
-            ];
-
-            $index++;
-        }
-
-        return new JsonResponse($rep);
-    }
-
-//    /**
-//     * @IsGranted("ROLE_USER")
-//     * @Route("/annonce", name="_step_one", methods={"GET", "POST"})
-//     */
-//    public function newDeclaration(Request $request, DeclarationRepository $declarationRepository): Response
-//    {
-//        $declaration = new Declaration();
-//        $form = $this->createForm(DeclarationFormType::class, $declaration);
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $declarationRepository->add($declaration, true);
-//
-//            return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->renderForm('annonce/test.html.twig', [
-//            'declaration' => $declaration,
-//            'form' => $form,
-//        ]);
-//    }
-
-    /**
-     * @IsGranted("ROLE_USER")
-     * @Route("/annonce", name="_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, EntityManagerInterface $em, SecteurRepository $repo, AnimalRepository $animalRepository): Response
-    {
-
-        $form = $this->createForm(DeclarationFormType::class);
+        $form = $this->createForm(AnimalFormType::class, $animal);
         $form->handleRequest($request);
 
-        $animal = new Animal();
-        $formAnimal = $this->createForm(AnimalFormType::class, $animal);
-        $formAnimal->handleRequest($request);
-
-        if ($formAnimal->isSubmitted() && $formAnimal->isValid()) {
-            $animalRepository->add($animal);
-            return $this->redirectToRoute('app_animal_index');
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $newDeclaration = $form->getData();
-            $newDeclaration->setSecteur($repo->find($request->request->get('declaration_form')['secteur']));
-            $newDeclaration->setOrganizer($this->getUser());
-
-            if ($request->request->get('creer')) {
-                $newDeclaration->setEtat($em->getRepository(Etat::class)->findOneBy(['libelle' => 'Créée']));
-                $this->addFlash('success', 'Votre declaration ' . $newDeclaration->getId() . ' a bien été créée');
-
-            };
-            $newDeclaration->addAttendee($this->getUser());
-
-            $em->persist($newDeclaration);
-            $em->flush();
-            return $this->redirectToRoute('main_home');
+//            $animalRepository->add($animal);
+            return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
         }
 
-        $currentUrl = $this->generateUrl('app_annonce_ajax_races');
-
-        return $this->render('annonce/annonce.html.twig', [
-            'form' => $form->createView(),
+        return $this->renderForm('animal/edit.html.twig', [
             'animal' => $animal,
-            'formAnimal' => $formAnimal->createView(),
-            'currentUrl' => $currentUrl,
+            'form' => $form,
         ]);
     }
 
+    private EntityManagerInterface $entityManager;
 
+    public function __construct(
+        EntityManagerInterface $entityManager
+    )
+    {
+        $this->entityManager = $entityManager;
+    }
+    /**
+     * @Route("/declaration/detail/{id}", name="_detail", methods={"GET"},requirements={"id"="\d+"})
+     */
+    public function detail($id, DeclarationRepository $declarationRepository): Response
+    {
+        //TODO s'assurer de bien renvoyer une declaration ou une page 404
+        return $this->render('declaration/detail.html.twig', [
+            'declaration' => $declarationRepository->find($id),
+        ]);
+    }
 
+    /**
+     * @Route("/declaration/{id}", name="_show", methods={"GET"},requirements={"id"="\d+"})
+     */
+    public function show(Declaration $declaration): Response
+    {
+        return $this->render('declaration/show.html.twig', [
+            'declaration' => $declaration,
+        ]);
+    }
 
+    /**
+     * @Route("/declaration/{id}/edit", name="_edit5", methods={"GET", "POST"})
+     */
+    public function edit5(int $id, Request $request, DeclarationRepository $declarationRepository): Response
+    {
+        $declaration = $declarationRepository->find($id);
 
+        if ($declaration == null) throw new NotFoundHttpException("Cette déclaration n'existe pas");
 
+        $form = $this->createForm(DeclarationFormType::class, $declaration);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($form->getData());
+
+            $this->entityManager->persist($declaration);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('main_home', ['id' => $id], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('declaration/edit.html.twig', [
+            'declaration' => $declaration,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/animal/{id}", name="_detail_animal", methods={"GET"},requirements={"id"="\d+"})
+     */
+    public function showAnimal(Animal $animal): Response
+    {
+        return $this->render('animal/show.html.twig', [
+            'animal' => $animal,
+        ]);
+    }
 
 }

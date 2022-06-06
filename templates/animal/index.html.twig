@@ -59,8 +59,8 @@
                 <td>{{ animal.photo }}</td>
                 <td>{{ animal.croisements }}</td>
                 <td>
-                    <a href="{{ path('app_animal_show', {'id': animal.id}) }}">show</a>
-                    <a href="{{ path('app_animal_edit', {'id': animal.id}) }}">edit</a>
+                    <a href="{{ path('app_animal_show', {id: animal.id}) }}">show</a>
+                    <a href="{{ path('app_animal_edit', {id: animal.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -71,5 +71,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_animal_new') }}">Create new</a>
+{#    <a href="{{ path('app_animal_new') }}">Create new</a>#}
 {% endblock %}

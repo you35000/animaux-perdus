@@ -21,29 +21,29 @@ class SecteurRepository extends ServiceEntityRepository
         parent::__construct($registry, Secteur::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function add(Secteur $entity, bool $flush = true): void
-    {
-        $this->_em->persist($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
-    }
+//    /**
+//     * @throws ORMException
+//     * @throws OptimisticLockException
+//     */
+//    public function add(Secteur $entity, bool $flush = true): void
+//    {
+//        $this->_em->persist($entity);
+//        if ($flush) {
+//            $this->_em->flush();
+//        }
+//    }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function remove(Secteur $entity, bool $flush = true): void
-    {
-        $this->_em->remove($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
-    }
+//    /**
+//     * @throws ORMException
+//     * @throws OptimisticLockException
+//     */
+//    public function remove(Secteur $entity, bool $flush = true): void
+//    {
+//        $this->_em->remove($entity);
+//        if ($flush) {
+//            $this->_em->flush();
+//        }
+//    }
 
     // /**
     //  * @return Secteur[] Returns an array of Secteur objects

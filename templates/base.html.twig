@@ -16,6 +16,9 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22>
         <text y=%221.2em%22 font-size=%2296%22></text></svg>">
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logo.jpg') }}">
+
+{#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
+{#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>#}
     {% block stylesheets %}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
               integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
@@ -25,6 +28,7 @@
               integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 {#        <link rel="stylesheet" href="style.css">#}
+
     {% endblock%}
 
 </head>
@@ -45,7 +49,7 @@
                     {% if app.user %}
 
                         <li class="nav-item">
-                            <a href="{{ path('app_annonce_new') }}" class="btn btn-outline-danger"> <i class="fa fa-plus"></i>
+                            <a href="{{ path('app_animal_new') }}" class="btn btn-outline-danger"> <i class="fa fa-plus"></i>
                                 Créer une déclaration</a>
                         </li>
                     {% endif %}
@@ -85,23 +89,21 @@
 
                             <li >
 
-                            <div class="dropdown">
-                                <button class="p-3 badge bg-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="dropdown">
+                                    <button class="p-3 badge bg-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ app.user.pseudo }}
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="{{ path('user_edit', {id: app.user.id}) }}"
-                                           class="nav-link {% if r == 'user_edit' %}active{% endif %}">Mon profil</a></li>
-                                    <li><a class="dropdown-item" href="{{ path('change_password', {id: app.user.id}) }}"
-                                           class="nav-link {% if r == 'password_change' %}active{% endif %}">mot de passe</a></li>
-                                </ul>
-                            </div>
-                            </li>
+                                    </button>
 
-{#                            <li class="nav-item ">#}
-{#                                <a href="{{ path('user_edit', {id: app.user.id}) }}"#}
-{#                                   class="nav-link {% if r == 'user_edit' %}active{% endif %}">Mon profil</a>#}
-{#                            </li>#}
+                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="{{ path('user_edit', {id: app.user.id}) }}"
+                                           class="nav-link {% if r == 'user_edit' %}active{% endif %}">Mon profil</a></li>
+
+                                        <li><a class="dropdown-item" href="{{ path('change_password', {id: app.user.id}) }}"
+                                           class="nav-link {% if r == 'password_change' %}active{% endif %}">mot de passe</a></li>
+                                    </ul>
+
+                                </div>
+                            </li>
 
 
                             {% else%}
@@ -133,12 +135,13 @@
 
 </div>
 
-<footer class="py-5 bg-dark">
+<footer class="py-5 bg-dark center">
 
-    <div class="container-xxl">
-        <div class="container px-4 px-lg-5">
-            <p class=" m-0 text-center text-white">Copyright &copy; {{ "now"|date("Y") }} </p>
-        </div>
+    <div class="flex_div center div_footer">
+
+{#            <p class=" center text-white">Copyright &copy; {{ "now"|date("Y") }} </p>#}
+
+
         <div class="col-md-7 d-flex align-items-center">
 
 
@@ -162,9 +165,19 @@
                                         <i class="fab fa-facebook"></i>
                                     </span>
                 </li>
+
             </ul>
         </div>
     </div>
+    <nav>
+        <ul>
+            <li><a href="">CGU</a></li>
+            <li><a href="">Mentions Légales</a></li>
+        </ul>
+    </nav>
+
+
+
 </footer>
 
 {#<!-- cdn for modernizr, if you haven't included it already -->#}
@@ -195,5 +208,6 @@
 {% endblock %}
 
 </body>
+
 </html>
 

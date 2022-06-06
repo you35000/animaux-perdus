@@ -1,12 +1,8 @@
 <?php
 
-namespace App\Form\Model;
+namespace App\Model;
 
 use App\Entity\Secteur;
-use DateTimeInterface;
-use Doctrine\DBAL\Types\BooleanType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchDeclaration
 {

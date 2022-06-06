@@ -3,10 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Declaration;
-use App\Entity\EspeceAnimal;
 use App\Entity\Secteur;
-use App\Entity\User;
-use App\Form\Model\SearchDeclaration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
