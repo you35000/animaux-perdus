@@ -54,135 +54,138 @@
 
     </div>
 
-    <div class="col-lg-3 my-5">
+{#    <div class="col-lg-3 my-5">#}
 
-        {% for signalement in signalements %}
-            <div class="card mb-1" style="max-width: 540px;">
-                <div class="card-body">
-                    <p class="card-text"><small class="text-muted">
-                            {{ signalement.auteur}}</small>
-                    </p>
-                    <p class="card-text"><small
-                                class="text-muted"> Le
-                            {{ signalement.dateHeure ? signalement.dateHeure|date('Y-m-d') : '' }}
-                            A {{ signalement.dateHeure ? signalement.dateHeure|date('H:i') : '' }}</small>
-                    </p>
-                    <p class="card-text"><small class="text-muted">
-                            {{ signalement.message}}</small>
-                    </p>
+{#        {% for signalement in signalements %}#}
+{#            <div class="card mb-1" style="max-width: 540px;">#}
+{#                <div class="card-body">#}
+{#                    <p class="card-text"><small class="text-muted">#}
+{#                            {{ signalement.auteur}}</small>#}
+{#                    </p>#}
+{#                    <p class="card-text"><small#}
+{#                                class="text-muted"> Le#}
+{#                            {{ signalement.dateHeure ? signalement.dateHeure|date('Y-m-d') : '' }}#}
+{#                            A {{ signalement.dateHeure ? signalement.dateHeure|date('H:i') : '' }}</small>#}
+{#                    </p>#}
+{#                    <p class="card-text"><small class="text-muted">#}
+{#                            {{ signalement.message}}</small>#}
+{#                    </p>#}
 
-                </div>
+{#                </div>#}
 
-            </div>
+{#            </div>#}
 
 
-        {% endfor %}
-    </div>
+{#        {% endfor %}#}
+{#    </div>#}
 
+
+
+{#    ***************************************AFFICHAGE SOUS FORME DES CARTES**************************#}
     <div class="col-lg-6 my-5">
-{#        <div class="row">#}
-
-            {#                AFFICHAGE SOUS FORME DES CARTES#}
-            {#                {% for declaration in declarations %}#}
-            {#                <div class="card mb-3" style="max-width: 540px;">#}
-            {#                    <div class="row g-0">#}
-            {#                        <div class="col-md-3">#}
-            {#                            <img src="{{ asset('img/logo.jpg') }}" class="img-fluid rounded-start"                            alt="...">#}
-            {#                        </div>#}
-            {#                        <div class="col-lg-md-6">#}
-            {#                            <div class="card-body">#}
-
-            {#                                <h5 class="card-title"><a href="{{ path('app_annonce_edit',{id: declaration.animaux.id}) }}">{{ declaration.animaux.nom }}</a></h5>#}
-            {#                                <p class="card-text"><small#}
-            {#                                            class="text-muted">{{ declaration.animaux.races.especes }}#}
-            {#                                        perdu le#}
-            {#                                        {{ declaration.dateHeureD ? declaration.dateHeureD|date('Y-m-d') : '' }}#}
-            {#                                        A {{ declaration.dateHeureD ? declaration.dateHeureD|date('H:i') : '' }}</small>#}
-            {#                                </p>#}
-
-
-            {#                                <p class="card-text"><small class="text-muted">#}
-            {#                                        Nom  : {{ declaration.animaux.nom }}<br>#}
-            {#                                        Sexe : {{ declaration.animaux.sexe }}<br>#}
-            {#                                        Race : {{ declaration.animaux.races }}<br>#}
-            {#                                    </small></p>#}
-
-            {#                                <p class="card-text"><big class="text-muted">#}
-            {#                                <span class="badge#}
-            {#                                {% if declaration.etats.libelle == 'Recherche abondonnée' %}#}
-            {#                                    bg-danger#}
-            {#                                {% elseif declaration.etats.libelle == 'Recherche en cours' %}#}
-            {#                                    bg-primary#}
-            {#                                {% elseif declaration.etats.libelle == 'Archivée' %}#}
-            {#                                    bg-warning#}
-            {##}
-            {#                                {% elseif declaration.etats.libelle == 'Trouvé' %}#}
-            {#                                    bg-success#}
-            {##}
-            {#                                {% endif %}">{{ declaration.etats.libelle }}</span>#}
-            {#                                        </big></p>#}
-
-            {#                                <a href="{{ path('app_annonce_show', {id: declaration.id}) }}"#}
-            {#                                   class="btn btn-primary">Detail</a>#}
-            {#                            </div>#}
-            {#                        </div>#}
-            {#                    </div>#}
-
-            {#                </div>#}
-            {#                {% endfor %}#}
-
-            <table class="text-center table table-hover table-light table-striped align-middle">
-                <thead class="table-dark">
-                <tr>
-                    <th>Nom</th>
-                    <th>Date de la disparition</th>
-                    <th>Sexe</th>
-                    <th>Race</th>
-                    <th>Etat</th>
-                    <th>Nom du proprietaire </th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for d in declarations %}
-                    {% if not ((d.etats.libelle == 'Créée')and(app.user != o.user)) %}
-
-                        <tr style="height:70px  ">
-                            <td><a href="{{ path('app_annonce_detail_animal',{id:d.id}) }}">{{ d.animaux.nom }}</a></td>
-                            <td>
+        <div class="row">
+            {% for declaration in declarations %}
+                            <div class="card mb-3" style="max-width: 540px;">
                                 <div class="row g-0">
-                                    <div class="col-6">
-                                        {{ d.dateHeureD ? d.dateHeureD|date('Y-m-d') : ''}}
+                                    <div class="col-md-3">
+                                        <img src="{{ asset('img/logo.jpg') }}" class="img-fluid rounded-start"                            alt="...">
                                     </div>
-                                    <div class="col-6">
-                                        {{ d.dateHeureD ? d.dateHeureD|date('H:i') : ''  }}
+                                    <div class="col-lg-md-6">
+                                        <div class="card-body">
+
+                                            <h5 class="card-title"><a href="{{ path('app_annonce_edit',{id: declaration.animaux.id}) }}">{{ declaration.animaux.nom }}</a></h5>
+                                            <p class="card-text"><small
+                                                        class="text-muted">{{ declaration.animaux.races.especes }}
+                                                    perdu le
+                                                    {{ declaration.dateHeureD ? declaration.dateHeureD|date('Y-m-d') : '' }}
+                                                    A {{ declaration.dateHeureD ? declaration.dateHeureD|date('H:i') : '' }}</small>
+                                            </p>
+
+
+                                            <p class="card-text"><small class="text-muted">
+                                                    Nom  : {{ declaration.animaux.nom }}<br>
+                                                    Sexe : {{ declaration.animaux.sexe }}<br>
+                                                    Race : {{ declaration.animaux.races }}<br>
+                                                </small></p>
+
+                                            <p class="card-text"><big class="text-muted">
+                                            <span class="badge
+                                            {% if declaration.etats.libelle == 'Recherche abondonnée' %}
+                                                bg-danger
+                                            {% elseif declaration.etats.libelle == 'Recherche en cours' %}
+                                                bg-primary
+                                            {% elseif declaration.etats.libelle == 'Archivée' %}
+                                                bg-warning
+
+                                            {% elseif declaration.etats.libelle == 'Trouvé' %}
+                                                bg-success
+
+                                            {% endif %}">{{ declaration.etats.libelle }}</span>
+                                                    </big></p>
+
+                                            <a href="{{ path('app_annonce_show', {id: declaration.id}) }}"
+                                               class="btn btn-primary">Detail</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </td>
-                            <td>{{ d.animaux.sexe }}</td>
-                            <td>{{ d.animaux.races }}</td>
-                            <td><span class="badge
-                                {% if d.etats.libelle == 'Recherche abondonnée' %}
-                                    bg-danger
-                                {% elseif d.etats.libelle == 'Recherche en cours' %}
-                                    bg-primary
-                                {% elseif d.etats.libelle == 'Archivée' %}
-                                    bg-warning
 
-                                {% elseif d.etats.libelle == 'Trouvé' %}
-                                    bg-success
+                            </div>
+                            {% endfor %}
+{#        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////#}
+{#        **********************code pour un tableau******************************************************************#}
 
-                                {% endif %}">{{ d.etats.libelle }}</span></td>
+{#            <table class="text-center table table-hover table-light table-striped align-middle">#}
+{#                <thead class="table-dark">#}
+{#                <tr>#}
+{#                    <th>Nom</th>#}
+{#                    <th>Date de la disparition</th>#}
+{#                    <th>Sexe</th>#}
+{#                    <th>Race</th>#}
+{#                    <th>Etat</th>#}
+{#                    <th>Nom du proprietaire </th>#}
+{#                </tr>#}
+{#                </thead>#}
+{#                <tbody>#}
+{#                {% for d in declarations %}#}
+{#                    {% if not ((d.etats.libelle == 'Créée')and(app.user != o.user)) %}#}
 
-                            <td>
-                                <a href="{{ path('user_show',{id:d.users.id}) }}">{{ d.users.pseudo }}</a>
-                            </td>
+{#                        <tr style="height:70px  ">#}
+{#                            <td><a href="{{ path('app_annonce_detail_animal',{id:d.id}) }}">{{ d.animaux.nom }}</a></td>#}
+{#                            <td>#}
+{#                                <div class="row g-0">#}
+{#                                    <div class="col-6">#}
+{#                                        {{ d.dateHeureD ? d.dateHeureD|date('Y-m-d') : ''}}#}
+{#                                    </div>#}
+{#                                    <div class="col-6">#}
+{#                                        {{ d.dateHeureD ? d.dateHeureD|date('H:i') : ''  }}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </td>#}
+{#                            <td>{{ d.animaux.sexe }}</td>#}
+{#                            <td>{{ d.animaux.races }}</td>#}
+{#                            <td><span class="badge#}
+{#                                {% if d.etats.libelle == 'Recherche abondonnée' %}#}
+{#                                    bg-danger#}
+{#                                {% elseif d.etats.libelle == 'Recherche en cours' %}#}
+{#                                    bg-primary#}
+{#                                {% elseif d.etats.libelle == 'Archivée' %}#}
+{#                                    bg-warning#}
 
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
-            {{ knp_pagination_render(annonces) }}
+{#                                {% elseif d.etats.libelle == 'Trouvé' %}#}
+{#                                    bg-success#}
+
+{#                                {% endif %}">{{ d.etats.libelle }}</span></td>#}
+
+{#                            <td>#}
+{#                                <a href="{{ path('user_show',{id:d.users.id}) }}">{{ d.users.pseudo }}</a>#}
+{#                            </td>#}
+
+{#                        </tr>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#                </tbody>#}
+{#            </table>#}
+{#            {{ knp_pagination_render(annonces) }}#}
 
 
     </div>

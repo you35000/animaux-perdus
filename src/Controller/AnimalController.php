@@ -33,37 +33,7 @@ class AnimalController extends AbstractController
     {
         $this->entityManager = $entityManager;
     }
-    /**
-     * Renvoie une chaîne JSON avec les races de l'espèce animal avec l'identifiant fourni.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     *
-     *
-     */
-    public function listRacesAnimalAction(Request $request)
-    {
-        // Get Entity manager and repository
-        $racesRepository = $this->entityManager->getRepository(Race::class);
 
-        // Recherche les races qui appartiennent à l'espèce animal' avec l'id donné comme paramètre GET "especeAnimalid"
-
-        $id = $request->query->get("especeAnimalid");
-        $races = $racesRepository->find($id);
-
-        // Sérialiser dans un tableau les données dont nous avons besoin, dans ce cas uniquement le nom et l'identifiant
-        // Remarque: vous pouvez également utiliser un sérialiseur, à des fins d'explication, nous le ferons manuellement
-        $responseArray = array();
-
-        foreach($races as $race){
-            $responseArray[] = array(
-                "id" => $race->getId(),
-                "nom" => $race->getNom()
-            );
-        }
-        // Renvoie un tableau avec la structure des races de l'identifiant de l'espèce animal fourni
-        return $this->jsonResponse($responseArray);
-    }
 
     /**
      * @IsGranted("ROLE_USER")
@@ -155,5 +125,35 @@ class AnimalController extends AbstractController
         return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
     }
 
-
+//    /**
+//     * Renvoie une chaîne JSON avec les races de l'espèce animal avec l'identifiant fourni.
+//     *
+//     * @param Request $request
+//     * @return JsonResponse
+//     *
+//     *
+//     */
+//    public function listRacesAnimalAction(Request $request)
+//    {
+//        // Get Entity manager and repository
+//        $racesRepository = $this->entityManager->getRepository(Race::class);
+//
+//        // Recherche les races qui appartiennent à l'espèce animal' avec l'id donné comme paramètre GET "especeAnimalid"
+//
+//        $id = $request->query->get("especeAnimalid");
+//        $races = $racesRepository->find($id);
+//
+//        // Sérialiser dans un tableau les données dont nous avons besoin, dans ce cas uniquement le nom et l'identifiant
+//        // Remarque: vous pouvez également utiliser un sérialiseur, à des fins d'explication, nous le ferons manuellement
+//        $responseArray = array();
+//
+//        foreach($races as $race){
+//            $responseArray[] = array(
+//                "id" => $race->getId(),
+//                "nom" => $race->getNom()
+//            );
+//        }
+//        // Renvoie un tableau avec la structure des races de l'identifiant de l'espèce animal fourni
+//        return $this->jsonResponse($responseArray);
+//    }
 }

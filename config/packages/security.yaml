@@ -27,6 +27,9 @@ security:
                 secret: '%kernel.secret%' # required
                 lifetime: 604800 # 1 week in seconds
 
+
+
+
             # On utilise un checker perso pour mettre en place un comportement plus spécifique
             user_checker: App\Security\UserChecker
 
@@ -54,3 +57,4 @@ when@test:
                 cost: 4 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
+

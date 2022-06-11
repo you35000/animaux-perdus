@@ -51,6 +51,17 @@ class DeclarationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function add(Declaration $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 
     /**
      * @throws ORMException
@@ -117,4 +128,9 @@ class DeclarationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+
+
+
 }
